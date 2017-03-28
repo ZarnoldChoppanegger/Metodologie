@@ -144,7 +144,7 @@ e questo si scrive una volta sola!
 Idioma RAII, perchè? Gli idiomi dovrebbero essere quei costrutti linguistici che si usano in un linguaggio e non possibile tradurli facilmente in un altro linguaggio, in java infatti non c'è. In java passa il camion dell'immondizia che vede se hai messo finally e toglie risorse.
 	(SU QUESTI ARGOMENTI SI SCHIANTANO GLI STUDENTI)
 
-###Problemi con la classe di prima:
+### Problemi con la classe di prima: ###
 
 * Col codice di prima non ho modo di usare le risorse perchè non ho un puntatore alla classe, non fa conversione implicita.
 * Opzione 1: uso get
