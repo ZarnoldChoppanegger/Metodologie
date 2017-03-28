@@ -42,8 +42,9 @@ void job(){
 	rilascia_risorsa(r1);
 	}
 
-	void job(){
-    /*try{ errore nel momento r1 va fuori scope nel catch
+void job(){
+    
+	/*try{ errore nel momento r1 va fuori scope nel catch
     Res* r1 = acquisisci_risorsa("res1");
     ...
     }*/
@@ -51,37 +52,41 @@ void job(){
     Res* r1 = ...;
     try{ //Protettore di r1
     
-    Res* r2 = acquisisci_risorsa("res2");
-    try{ //Protettore di r2
-	do_task(r1,r2);  //qualunque cosa sia successa salto a catch
-	rilascia_risorsa(r2);
+		Res* r2 = acquisisci_risorsa("res2");
+		try{ //Protettore di r2
+		do_task(r1,r2);  //qualunque cosa sia successa salto a catch
+		rilascia_risorsa(r2);
+	
+		}
+	
+		catch(...){
+			rilascia_risorsa(r2);
+			throw;
+			
+				/* me ne frego se c'è anche r1
+					perchè quando esco rilancio l'eccezione che rilascia r1
+					(neutralità)*/
+				//...
+			}
+			
+		Res* r3 = ...;
+    
+		try{
+			do_task(r1,r3);
+			rilascia_risorsa(r3);
+			rilascia_risorsa(r1);
+			}
+		
+		catch(...){
+			rilascia_risorsa(r3);
+			throw;
+		}
 	}
-	catch(...){
-	rilascia_risorsa(r2);
-	throw;
-	/* me ne frego se c'è anche r1
-	perchè quando esco rilancio l'eccezione che rilascia r1
-	(neutralità)*/
-    ...
-    }
-
-    Res* r3 = ...;
-    try{
-	do_task(r1,r3);
-	rilascia_risorsa(r3);
-	rilascia_risorsa(r1);
-    }
 
 	catch(...){
-	rilascia_risorsa(r3);
-	throw;
-	}
-    }
-
-	catch(...){
-	//fai qualcosa
-	rilascia_risorsa(r1);
-	throw;
+		//fai qualcosa
+		rilascia_risorsa(r1);
+		throw;
 	}
 }
 ```
@@ -101,20 +106,21 @@ In c++ avevamo un costrutto che faceva più o meno questa cosa (rilascio risorse
 Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fintanto che c'è l'oggetto di una classe da distruggere. Quindi se la gestione delle risorse la mettiamo dentro costruttore e distruttore.
 
 ```c++
-
 class RAII_RRID_Res;
 
 void job(){
     RAII_RRID_Res r1("res1"); //dentro farà magia nera per acquisire risorsa
-    //per rilasciare risorsa lo mettiamo nel ditruttore della classe chiamato implicitamente quando va fuori scope
     {
+		//per rilasciare risorsa lo mettiamo nel ditruttore della classe chiamato implicitamente quando va fuori scope
+		
 		RAII_RRID_Res r2("res2"); //c'è un problema...
 		do_task(r1, r2);
-    /* vogliamo che la risorsa 2 venga eliminata prima della fine della funzione */
+    
+		/* vogliamo che la risorsa 2 venga eliminata prima della fine della funzione */
     }
-    //così anche per r3
+    
+	//così anche per r3
 }
-
 ```
 
 Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ricordarsi di chiamare la classe RAII.
@@ -127,12 +133,12 @@ class RAII_RRID_Res{
 	public:
 		RAII_RRID_Res(const char* name){
 			r = acquisisci_risorsa(name);
-		}
-
-	~RAII_RRID_Res(){
-		rilascia_risorsa(r);
-		}
-
+			}
+			
+			~RAII_RRID_Res(){
+				rilascia_risorsa(r);
+			}
+		
 	private:
 		Res* r;
 };
