@@ -2,7 +2,7 @@ Come faccio a fare in modo da non avere resource leak?
 
 associamo un blocco try catch a ogni uso della risorsa:
 
-	```C++
+```c++
 
 	void job(){
     Res* r1 = acquisisci_risorsa("res1");
@@ -86,9 +86,9 @@ associamo un blocco try catch a ogni uso della risorsa:
 	}
 	}
 
-	```
+```
 
-	Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripetitivo, verboso. Diventa un generatore infinito di errori. Questo è quello che devono fare i poveracci che scrivono in java :( ...
+Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripetitivo, verboso. Diventa un generatore infinito di errori. Questo è quello che devono fare i poveracci che scrivono in java :( ...
 	In java però hanno **finally**, blocco da mettere dopo il try e si occupa di sostituire quello che abbiamo scritto in c++ (rilascio risorse e throw).
 
 	**Perchè non c'è in c++? Perchè c'è un'alternativa 100 volte meglio!**
@@ -102,7 +102,7 @@ associamo un blocco try catch a ogni uso della risorsa:
 
 	Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fintanto che c'è l'oggetto di una classe da distruggere. Quindi se la gestione delle risorse la mettiamo dentro costruttore e distruttore.
 
-	```c++
+```c++
 	class RAII_RRID_Res;
 
 	void job(){
@@ -115,13 +115,13 @@ associamo un blocco try catch a ogni uso della risorsa:
     }
     //così anche per r3
     }
-    ```
+   ```
 
-	Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ricordarsi di chiamare la classe RAII.
+Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ricordarsi di chiamare la classe RAII.
 
 	Come distruggere:
 
-	```c++
+```c++
 	class RAII_RRID_Res{
 	public:
 	RAII_RRID_Res(const char* name){
@@ -136,28 +136,27 @@ associamo un blocco try catch a ogni uso della risorsa:
 	Res* r;
 	};
 	
-	```
+```
 
-	e questo si scrive una volta sola!
+e questo si scrive una volta sola!
 
-	Idioma RAII, perchè? Gli idiomi dovrebbero essere quei costrutti linguistici che si usano in un linguaggio e non possibile tradurli facilmente in un altro linguaggio, in java infatti non c'è. In java passa il camion dell'immondizia che vede se hai messo finally e toglie risorse.
+Idioma RAII, perchè? Gli idiomi dovrebbero essere quei costrutti linguistici che si usano in un linguaggio e non possibile tradurli facilmente in un altro linguaggio, in java infatti non c'è. In java passa il camion dell'immondizia che vede se hai messo finally e toglie risorse.
 	(SU QUESTI ARGOMENTI SI SCHIANTANO GLI STUDENTI)
 
-	Problemi conla classe di prima:
+###Problemi con la classe di prima:
 
 	* Col codice di prima non ho modo di usare le risorse perchè non ho un puntatore alla classe, non fa conversione implicita.
 	* Opzione 1: uso get
 	* Opzione 2: faccio conversione implicita
 
-	```c++
+```c++
 	operator Res*() const {return r;}
-	```
+```
 	* Ha costruttore di default? NO
 	* Ha costruttore di copia, assegnamento (...e altra roba) e questi sono fatti male, perchè copiano i membri, quindi il puntatore alla risorsa e con due oggetti RAII mi ritrovo che entrambi puntano alla stessa risorsa e se viene eliminato uno dei due, mi ritrovo con dangling pointer. Se scriviamo uno dei costruttori bisogna scrivere anche gli altri (c++99) ora nel c++11 dovrebbero disattivarsi tutti se almeno uno è stato definito.
-	```c++11
+```c++
 
 	RAII_RRID_Res(const RAII_RRID_Res&) = delete;
 	RAII_RRID_Res& operator=(const RAII_RRID_Res&) = delete;
 
-	```
-
+```
