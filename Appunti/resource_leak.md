@@ -3,10 +3,9 @@ Come faccio a fare in modo da non avere resource leak?
 associamo un blocco try catch a ogni uso della risorsa:
 
 ```c++
-
-	void job(){
-    Res* r1 = acquisisci_risorsa("res1");
-    Res* r2 = acquisisci_risorsa("res2");
+void job(){
+	Res* r1 = acquisisci_risorsa("res1");
+	Res* r2 = acquisisci_risorsa("res2");
 
 	try{
 
@@ -84,11 +83,10 @@ associamo un blocco try catch a ogni uso della risorsa:
 	rilascia_risorsa(r1);
 	throw;
 	}
-	}
-
+}
 ```
 
-Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripetitivo, verboso. Diventa un generatore infinito di errori. Questo è quello che devono fare i poveracci che scrivono in java :( ...
+Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripetitivo, verboso. Diventa un generatore infinito di errori. Questo è quello che devono fare i poveracci che scrivono in java  :angry:  ...
 	In java però hanno **finally**, blocco da mettere dopo il try e si occupa di sostituire quello che abbiamo scritto in c++ (rilascio risorse e throw).
 
 **Perchè non c'è in c++? Perchè c'è un'alternativa 100 volte meglio!**
@@ -122,7 +120,6 @@ Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ri
 Come distruggere:
 
 ```c++
-	
 	class RAII_RRID_Res{
 	public:
 	RAII_RRID_Res(const char* name){
@@ -136,7 +133,6 @@ Come distruggere:
 	private:
 	Res* r;
 	};
-	
 ```
 
 e questo si scrive una volta sola!
@@ -147,17 +143,17 @@ Idioma RAII, perchè? Gli idiomi dovrebbero essere quei costrutti linguistici ch
 ### Problemi con la classe di prima: ###
 
 * Col codice di prima non ho modo di usare le risorse perchè non ho un puntatore alla classe, non fa conversione implicita.
-* Opzione 1: uso get
-* Opzione 2: faccio conversione implicita
+  * Opzione 1: uso get
+  * Opzione 2: faccio conversione implicita
 
 ```c++
-	operator Res*() const {return r;}
+operator Res*() const {return r;}
 ```
-	* Ha costruttore di default? NO
-	* Ha costruttore di copia, assegnamento (...e altra roba) e questi sono fatti male, perchè copiano i membri, quindi il puntatore alla risorsa e con due oggetti RAII mi ritrovo che entrambi puntano alla stessa risorsa e se viene eliminato uno dei due, mi ritrovo con dangling pointer. Se scriviamo uno dei costruttori bisogna scrivere anche gli altri (c++99) ora nel c++11 dovrebbero disattivarsi tutti se almeno uno è stato definito.
-```c++
 
+* Ha costruttore di default? NO
+* Ha costruttore di copia, assegnamento (...e altra roba) e questi sono fatti male, perchè copiano i membri, quindi il puntatore alla risorsa e con due oggetti RAII mi ritrovo che entrambi puntano alla stessa risorsa e se viene eliminato uno dei due, mi ritrovo con dangling pointer. Se scriviamo uno dei costruttori bisogna scrivere anche gli altri (c++99) ora nel c++11 dovrebbero disattivarsi tutti se almeno uno è stato definito.
+
+```c++
 	RAII_RRID_Res(const RAII_RRID_Res&) = delete;
 	RAII_RRID_Res& operator=(const RAII_RRID_Res&) = delete;
-
 ```
