@@ -4,91 +4,92 @@ associamo un blocco try catch a ogni uso della risorsa:
 
 ```c++
 void job(){
-	Res* r1 = acquisisci_risorsa("res1");
-	Res* r2 = acquisisci_risorsa("res2");
+  Res* r1 = acquisisci_risorsa("res1");
+  Res* r2 = acquisisci_risorsa("res2");
 
-	try{
+  try{
 
-	do_task(r1,r1);
-	//non vogliamo gestire l'errore, noi siamo i man in the middle, spesso no abbiamo l'informazione per saperee come gestire l'eccezione, che tipo di risorse vengono gestite
-	}
+    do_task(r1,r1);
+    //non vogliamo gestire l'errore, noi siamo i man in the middle, spesso no abbiamo l'informazione per saperee come gestire l'eccezione, che tipo di risorse vengono gestite
+  }
 
-	//...allora catturo ogni cosa brutto può essere successa
-	catch(...){
-	//Qui cosa faccio? Rilascio risorse
-	rilascia_risorsa(r2);
-	rilascia_risorsa(r1);
-	//rilasciate in modo inverso, poichè così è bello
-	//e le rilascio anche alla fine della funzione, che non è bello...
-	/*... cosa faccio? LANCIO UN' ALTRA ECCEZIONE
-	in modo che quelli di sopra sappiano che c'è stato un problema */
+  //...allora catturo ogni cosa brutto può essere successa
+  catch(...){
+    //Qui cosa faccio? Rilascio risorse
+    rilascia_risorsa(r2);
+    rilascia_risorsa(r1);
+    //rilasciate in modo inverso, poichè così è bello
+    //e le rilascio anche alla fine della funzione, che non è bello...
+    /*... cosa faccio? LANCIO UN' ALTRA ECCEZIONE
+      in modo che quelli di sopra sappiano che c'è stato un problema */
 
-	throw;
-	/*questa la si può invocare solo dentro un'eccezione e significa:
-	rilancia l'eccezione catturata (neutralità rispetto all'eccezione)
-	le eccezioni ci attraversano e le lasciamo andare verso l adestinazione vera
-	verso chi le deve gestire. Questa è una caratteristica fondamentale per
-	avere codice exception safe.
-	Il problema è che è scomodissima da fare! Uso 50 volta una risorsa,
-	50 try catch.
-	Quindi blocco try catch alla risorsa non a chi la usa, quest'ultimo deve solo
-	rilanciare l'eccezione*/
-	}
+    throw;
+    /*questa la si può invocare solo dentro un'eccezione e significa:
+      rilancia l'eccezione catturata (neutralità rispetto all'eccezione)
+      le eccezioni ci attraversano e le lasciamo andare verso l adestinazione vera
+      verso chi le deve gestire. Questa è una caratteristica fondamentale per
+      avere codice exception safe.
+      Il problema è che è scomodissima da fare! Uso 50 volta una risorsa,
+      50 try catch.
+      Quindi blocco try catch alla risorsa non a chi la usa, quest'ultimo deve solo
+      rilanciare l'eccezione*/
+  }
 
-	rilascia_risorsa(r2);
-	Res* r3 = acquisisci_risorsa("res3");
-	do_task(r1,r3);
-	rilascia_risorsa(r3);
-	rilascia_risorsa(r1);
-	}
+  rilascia_risorsa(r2);
+  Res* r3 = acquisisci_risorsa("res3");
+  do_task(r1,r3);
+  rilascia_risorsa(r3);
+  rilascia_risorsa(r1);
+}
 
 void job(){
     
-	/*try{ errore nel momento r1 va fuori scope nel catch
+  /*try{ errore nel momento r1 va fuori scope nel catch
     Res* r1 = acquisisci_risorsa("res1");
     ...
     }*/
     
-    Res* r1 = ...;
-    try{ //Protettore di r1
+  Res* r1 = ...;
+  try{ //Protettore di r1
     
-		Res* r2 = acquisisci_risorsa("res2");
-		try{ //Protettore di r2
-		do_task(r1,r2);  //qualunque cosa sia successa salto a catch
-		rilascia_risorsa(r2);
+    Res* r2 = acquisisci_risorsa("res2");
+    try{ //Protettore di r2
+      do_task(r1,r2);  //qualunque cosa sia successa salto a catch
+      rilascia_risorsa(r2);
 	
-		}
+    }
 	
-		catch(...){
-			rilascia_risorsa(r2);
-			throw;
-			
-				/* me ne frego se c'è anche r1
-					perchè quando esco rilancio l'eccezione che rilascia r1
-					(neutralità)*/
-				//...
-			}
-			
-		Res* r3 = ...;
+    catch(...){
+      rilascia_risorsa(r2);
+      throw;
+	
+      /* me ne frego se c'è anche r1
+	 perchè quando esco rilancio l'eccezione che rilascia r1
+	 (neutralità)*/
+      //...
+    }
+	
+    Res* r3 = ...;
     
-		try{
-			do_task(r1,r3);
-			rilascia_risorsa(r3);
-			rilascia_risorsa(r1);
-			}
-		
-		catch(...){
-			rilascia_risorsa(r3);
-			throw;
-		}
-	}
+    try{
+      do_task(r1,r3);
+      rilascia_risorsa(r3);
+      rilascia_risorsa(r1);
+    }
+	
+    catch(...){
+      rilascia_risorsa(r3);
+      throw;
+    }
+  }
 
-	catch(...){
-		//fai qualcosa
-		rilascia_risorsa(r1);
-		throw;
-	}
+  catch(...){
+    //fai qualcosa
+    rilascia_risorsa(r1);
+    throw;
+  }
 }
+
 ```
 
 Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripetitivo, verboso. Diventa un generatore infinito di errori. Questo è quello che devono fare i poveracci che scrivono in java  :angry:  ...
@@ -109,17 +110,17 @@ Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fint
 class RAII_RRID_Res;
 
 void job(){
-    RAII_RRID_Res r1("res1"); //dentro farà magia nera per acquisire risorsa
-    {
-		//per rilasciare risorsa lo mettiamo nel ditruttore della classe chiamato implicitamente quando va fuori scope
-		
-		RAII_RRID_Res r2("res2"); //c'è un problema...
-		do_task(r1, r2);
+  RAII_RRID_Res r1("res1"); //dentro farà magia nera per acquisire risorsa
+  {
+    //per rilasciare risorsa lo mettiamo nel ditruttore della classe chiamato implicitamente quando va fuori scope
+	
+    RAII_RRID_Res r2("res2"); //c'è un problema...
+    do_task(r1, r2);
     
-		/* vogliamo che la risorsa 2 venga eliminata prima della fine della funzione */
-    }
+    /* vogliamo che la risorsa 2 venga eliminata prima della fine della funzione */
+  }
     
-	//così anche per r3
+  //così anche per r3
 }
 ```
 
@@ -128,19 +129,18 @@ Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ri
 Come distruggere:
 
 ```c++
-
 class RAII_RRID_Res{
-	public:
-		RAII_RRID_Res(const char* name){
-			r = acquisisci_risorsa(name);
-			}
-			
-			~RAII_RRID_Res(){
-				rilascia_risorsa(r);
-			}
-		
-	private:
-		Res* r;
+public:
+  RAII_RRID_Res(const char* name){
+    r = acquisisci_risorsa(name);
+  }
+	
+  ~RAII_RRID_Res(){
+    rilascia_risorsa(r);
+  }
+	
+private:
+  Res* r;
 };
 
 ```
