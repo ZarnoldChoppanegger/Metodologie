@@ -101,18 +101,20 @@ In c++ avevamo un costrutto che faceva più o meno questa cosa (rilascio risorse
 Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fintanto che c'è l'oggetto di una classe da distruggere. Quindi se la gestione delle risorse la mettiamo dentro costruttore e distruttore.
 
 ```c++
-	class RAII_RRID_Res;
 
-	void job(){
+class RAII_RRID_Res;
+
+void job(){
     RAII_RRID_Res r1("res1"); //dentro farà magia nera per acquisire risorsa
     //per rilasciare risorsa lo mettiamo nel ditruttore della classe chiamato implicitamente quando va fuori scope
     {
-    RAII_RRID_Res r2("res2"); //c'è un problema...
-    do_task(r1, r2);
+		RAII_RRID_Res r2("res2"); //c'è un problema...
+		do_task(r1, r2);
     /* vogliamo che la risorsa 2 venga eliminata prima della fine della funzione */
     }
     //così anche per r3
-    }
+}
+
 ```
 
 Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ricordarsi di chiamare la classe RAII.
@@ -120,19 +122,21 @@ Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ri
 Come distruggere:
 
 ```c++
-	class RAII_RRID_Res{
+
+class RAII_RRID_Res{
 	public:
-	RAII_RRID_Res(const char* name){
-	r = acquisisci_risorsa(name);
-	}
+		RAII_RRID_Res(const char* name){
+			r = acquisisci_risorsa(name);
+		}
 
 	~RAII_RRID_Res(){
-	rilascia_risorsa(r);
-	}
+		rilascia_risorsa(r);
+		}
 
 	private:
-	Res* r;
-	};
+		Res* r;
+};
+
 ```
 
 e questo si scrive una volta sola!
@@ -154,6 +158,6 @@ operator Res*() const {return r;}
 * Ha costruttore di copia, assegnamento (...e altra roba) e questi sono fatti male, perchè copiano i membri, quindi il puntatore alla risorsa e con due oggetti RAII mi ritrovo che entrambi puntano alla stessa risorsa e se viene eliminato uno dei due, mi ritrovo con dangling pointer. Se scriviamo uno dei costruttori bisogna scrivere anche gli altri (c++99) ora nel c++11 dovrebbero disattivarsi tutti se almeno uno è stato definito.
 
 ```c++
-	RAII_RRID_Res(const RAII_RRID_Res&) = delete;
-	RAII_RRID_Res& operator=(const RAII_RRID_Res&) = delete;
+RAII_RRID_Res(const RAII_RRID_Res&) = delete;
+RAII_RRID_Res& operator=(const RAII_RRID_Res&) = delete;
 ```
