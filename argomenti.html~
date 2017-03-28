@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>argomenti.html</title>
+
+</head>
+
+<body>
+
+<ul>
+<li><strong>rvalue e lvalue:</strong> ss pag.12, pag.166</li>
+<li><strong>puntatori,array e riferimenti:</strong> ss pag.171</li>
+<li><strong>scope:</strong> iso pag.41, ss pag.157</li>
+<li><strong>ciclo di vita:</strong> ss pag.166</li>
+<li><strong>ORD:</strong> ss pag.425, iso pag.38</li>
+<li><strong>compilazione separata, unità di traduzione:</strong> ss pag.419</li>
+</ul>
+
+</body>
+</html>
