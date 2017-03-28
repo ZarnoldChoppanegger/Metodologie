@@ -91,16 +91,16 @@ associamo un blocco try catch a ogni uso della risorsa:
 Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripetitivo, verboso. Diventa un generatore infinito di errori. Questo è quello che devono fare i poveracci che scrivono in java :( ...
 	In java però hanno **finally**, blocco da mettere dopo il try e si occupa di sostituire quello che abbiamo scritto in c++ (rilascio risorse e throw).
 
-	**Perchè non c'è in c++? Perchè c'è un'alternativa 100 volte meglio!**
+**Perchè non c'è in c++? Perchè c'è un'alternativa 100 volte meglio!**
 
-	In c++ avevamo un costrutto che faceva più o meno questa cosa (rilascio risorse e rilancio eccezione)?
+In c++ avevamo un costrutto che faceva più o meno questa cosa (rilascio risorse e rilancio eccezione)?
 
-	## RAII - RRID ##
+## RAII - RRID ##
 
-	* **RAII**: resource acquisition is initialization
-	* **RRID**: resource release is Destruction, è quellaa funzione che quando l'oggetto va fuori scope non importa come, la funzione distruttore viene eseguita. Se l'uscita è eccezionale la lascia propagare come prima quindi è anche resource safe
+* **RAII**: resource acquisition is initialization
+* **RRID**: resource release is Destruction, è quellaa funzione che quando l'oggetto va fuori scope non importa come, la funzione distruttore viene eseguita. Se l'uscita è eccezionale la lascia propagare come prima quindi è anche resource safe
 
-	Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fintanto che c'è l'oggetto di una classe da distruggere. Quindi se la gestione delle risorse la mettiamo dentro costruttore e distruttore.
+Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fintanto che c'è l'oggetto di una classe da distruggere. Quindi se la gestione delle risorse la mettiamo dentro costruttore e distruttore.
 
 ```c++
 	class RAII_RRID_Res;
@@ -115,13 +115,14 @@ Facendo così siamo resource leak free ma leggere e scrivere è un casino, ripet
     }
     //così anche per r3
     }
-   ```
+```
 
 Codice più breve, non ci si dimentica di deallocare risorse, l'importante è ricordarsi di chiamare la classe RAII.
 
-	Come distruggere:
+Come distruggere:
 
 ```c++
+	
 	class RAII_RRID_Res{
 	public:
 	RAII_RRID_Res(const char* name){
@@ -145,9 +146,9 @@ Idioma RAII, perchè? Gli idiomi dovrebbero essere quei costrutti linguistici ch
 
 ###Problemi con la classe di prima:
 
-	* Col codice di prima non ho modo di usare le risorse perchè non ho un puntatore alla classe, non fa conversione implicita.
-	* Opzione 1: uso get
-	* Opzione 2: faccio conversione implicita
+* Col codice di prima non ho modo di usare le risorse perchè non ho un puntatore alla classe, non fa conversione implicita.
+* Opzione 1: uso get
+* Opzione 2: faccio conversione implicita
 
 ```c++
 	operator Res*() const {return r;}
