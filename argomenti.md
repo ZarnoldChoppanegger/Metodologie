@@ -1,4 +1,5 @@
 ss = Stroustup
+
 iso = standard c++ 
 
 * **rvalue e lvalue:** ss pag.12, pag.166
