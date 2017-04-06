@@ -23,5 +23,10 @@ bool b4 { i != 0 }; //ok
 ```
 * Un puntatore può essere convertito in booleano. Se il puntatore è non nullo sarà convertito a valore true, se il puntatore è nullo sarà convertito a false. È preferibile non comparare un puntatore a nullptr poichè l'espressioneèpiù lunga quindi error prone.
 
+## Characters ##
 
-
+* Ci sono diversi insiemi di caratteri e di encoding dei caratteri. Il c++ quindi offre diversi tipi di dato per rappresentare i caratteri:
+  * **char:** tipo di default per implementare insiemi di caratteri ed è di solito a 8 bit.
+  * **unsigned char:** assicura che non ci sia segno
+  * **signed char:** come char ma è capace di contenere sia numeri positivi che negativi
+  * **wchar_t:** fornito per rappresentare set di caratteri più grandi come l' UNICODE. 
