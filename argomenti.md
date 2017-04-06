@@ -2,6 +2,7 @@ ss = Stroustup
 
 iso = standard c++ 
 
+* **data types:** ss pag.135
 * **rvalue e lvalue:** ss pag.12, pag.166
 * **puntatori,array e riferimenti:** ss pag.171
 * **scope:** iso pag.41, ss pag.157
