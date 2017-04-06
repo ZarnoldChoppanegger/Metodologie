@@ -9,9 +9,9 @@ int main(){
   char c = 255;
 
   std::cout << "unsigned char : " << int{uc}
-                  << "\nsigned char : " << int{sc}
-                  << "\nchar : " << int{c}
-                  << "\n";
+            << "\nsigned char : " << int{sc}
+            << "\nchar : " << int{c}
+            << "\n";
 
   return 0;
 }
