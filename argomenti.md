@@ -9,3 +9,4 @@ iso = standard c++
 * **ciclo di vita:** ss pag.166
 * **ODR:** ss pag.425, iso pag.38
 * **compilazione separata, unità di traduzione:** ss pag.419
+* **conversioni e promozioni:** ss pag.267

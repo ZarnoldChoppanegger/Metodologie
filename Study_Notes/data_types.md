@@ -21,7 +21,7 @@ bool b3 {true};  //ok
 int i = 7;
 bool b4 { i != 0 }; //ok
 ```
-* Un puntatore può essere convertito in booleano. Se il puntatore è non nullo sarà convertito a valore true, se il puntatore è nullo sarà convertito a false. È preferibile non comparare un puntatore a nullptr poichè l'espressioneèpiù lunga quindi error prone.
+* Un puntatore può essere convertito in booleano. Se il puntatore è non nullo sarà convertito a valore true, se il puntatore è nullo sarà convertito a false. È preferibile non comparare un puntatore a nullptr poichè l'espressione è più lunga quindi error prone.
 
 ## Characters ##
 
@@ -30,3 +30,15 @@ bool b4 { i != 0 }; //ok
   * **unsigned char:** assicura che non ci sia segno
   * **signed char:** come char ma è capace di contenere sia numeri positivi che negativi
   * **wchar_t:** fornito per rappresentare set di caratteri più grandi come l' UNICODE. 
+  * **char16_t:** a type for holding 16bit character sets, such as UTF-16
+  * **char32_t:** a type for holding 32bit character sets, such as UTF-32
+
+In quasi ogni implementazione il tipo *char* sarà implementato in maniera identica a *unsigned char* e *signed char*, ma sono comunque considerati tipi diversi.
+
+>Ogni qualvolta sia possibile, è meglio non fare supposizioni  sulla rappresentazione di oggetti
+
+La scelta di rappresentare semplici char come interi con o senza segno è implementation-defined. Sono definiti solo i signed char (-127, 127) e gli unsigned char (0, 255). C'è differenza tra i due tipi solo per i caratteri che si trovano all'infuori dell'intervallo 0-127. Usare caratteri che si trovano fuori dall'intervallo possono portare a problemi di portabilità.
+
+
+
+
