@@ -12,10 +12,11 @@ iso = standard c++
 * **conversioni e promozioni:** ss pag.267
 * **Indicizzazione array:**
 * **constexpr:**
-* **struct/classi:** (vedere bene i vari costruttori possibili) ss pag 449, 
+* **struct/classi:** (vedere bene i vari costruttori possibili) ss pag.449, **invarianti di classe:** ss pag.56, 
 * dare un occhio alla **string stream:**
 * **explicit nelle funzioni:**
 * **operatori di incremento e decremento:**
 * **contratti NARROW e WIDE:**
 * **asserzioni:**
 * **regole di chiamata a funzione:** (in caso di overload)
+* **exception-handling:** ss pag.343 
