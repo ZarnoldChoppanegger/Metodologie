@@ -10,3 +10,12 @@ iso = standard c++
 * **ODR:** ss pag.425, iso pag.38
 * **compilazione separata, unità di traduzione:** ss pag.419
 * **conversioni e promozioni:** ss pag.267
+* **Indicizzazione array:**
+* **constexpr:**
+* **struct/classi:** (vedere bene i vari costruttori possibili) ss pag 449, 
+* dare un occhio alla **string stream:**
+* **explicit nelle funzioni:**
+* **operatori di incremento e decremento:**
+* **contratti NARROW e WIDE:**
+* **asserzioni:**
+* **regole di chiamata a funzione:** (in caso di overload)
