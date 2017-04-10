@@ -25,7 +25,7 @@ class S {public: ...};
 
 ### Costruttori ###
 * usare una funzione per inizializzare un oggetto può portare a errori, l'utente della classe infatti può dimenticarsi di inizializzare l'oggetto o inizializzarlo due volte, entrambe le situazioni possono portare a risultati disastrosi; quindi è meglio fornire una funzione con lo specifico obiettivo di inizializzare gli oggetti, questa funzione è chiamata **costruttore**.
-* un costruttore ha lo stesso nome della classe e se richiede argomenti, questi vanno forniti (vedi [costruttori.cc] (https://github.com/wabbaJack/Metodologie/blob/master/Codice_Prova/costruttori.cc))
+* un costruttore ha lo stesso nome della classe e se richiede argomenti, questi vanno forniti (vedi [Costruttori](https://github.com/wabbaJack/Metodologie/blob/master/Codice_Prova/costruttori.cc))
 * da* è consigliabile usare l'inizializzazione con la notazione **{  }** poichè è più esplicita rispetto a ciò che viene fatto e quindi permette di evitare potenziali errori.
 * le regole di overloading per le funzioni vengono applicate anche ai costruttori.
 * in un costruttore possono essere definiti anche dei valori di default per i parametri e questi dovrebbero essere all'infuori dell'insieme dei possibili valori assegnabili all'argomento, es.
