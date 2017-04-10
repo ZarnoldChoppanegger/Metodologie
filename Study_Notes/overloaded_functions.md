@@ -1,0 +1,2 @@
+## Overloaded functions ##
+Il c++ offre la possibilità di definire più funzioni con lo stesso nome ma numero e/o tipo di parametri diverso. Questa funzionalità è più che altro una notazione di convenienza che risulta utile per funzioni con nomi convenzionali come *sqrt, print, open*.  Quando i nomi sono **semanticamente significativi** questa convenienza diventa essenziale come nel caso degli operatori +, *, <<, per i costruttori e nella programmazione generica.
