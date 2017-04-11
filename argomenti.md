@@ -16,7 +16,10 @@ iso = standard c++
 * dare un occhio alla **string stream:**
 * **explicit nei costruttori:** ss pag.457 (*)
 * **operatori di incremento e decremento:**
+* **pre-prost condizioni:** ss pag.330
 * **contratti NARROW e WIDE:**
 * **asserzioni:** ss pag.873
 * **regole di chiamata a funzione:** (in caso di overload) ss pag.326, iso pag.314
-* **exception-handling:** ss pag.343 
+* **exception-handling:** ss pag.343
+
+
