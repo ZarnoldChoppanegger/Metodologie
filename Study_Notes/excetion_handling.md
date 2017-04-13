@@ -14,7 +14,7 @@ L'uso delle eccezioni per segnalare un errore sono un esempio di come una funzio
 
 >Il compito del costruttore è stabilire l'invariante di classe (creare l'ambiente nel quale le funzioni membro devono operare) e in oltre spesso richiedono l'acquisizione delle risorse
 
-Le funzioni membro devono controllare che l'invariante si corretta dopo la loro esecuzione (**postcondizioni**).
+Le funzioni membro devono controllare che l'invariante si corretta anche dopo la loro esecuzione (**postcondizioni**).
 
 ### Asserzioni ###
 
