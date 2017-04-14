@@ -1,4 +1,4 @@
-###20141125###
+### 20141125 ###
 
 #### exe1 #####
 * conversione da tipo classe facendo operator nome_tipo_a_cui_convertire
@@ -136,6 +136,7 @@ static void zen(int i, double d) {
 
 #### exe2 ####
 type decay (qualificazine di lvalue) corrispondenza esatta, ai -> int*
+
 ai[5]->const int* non è possibile, perchè voglio trasformare un intero in un puntatore a costante, se ai[5] = 0 non possibile perchè dovrebbe essere una costante per convertire
 se ai + 5 -> const int* allora possibile perchè non dereferenzio
 
