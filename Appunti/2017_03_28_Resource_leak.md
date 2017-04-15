@@ -10,7 +10,10 @@ void job(){
   try{
 
     do_task(r1,r1);
-    //non vogliamo gestire l'errore, noi siamo i man in the middle, spesso no abbiamo l'informazione per saperee come gestire l'eccezione, che tipo di risorse vengono gestite
+    /*non vogliamo gestire l'errore, noi siamo i man in the middle, 
+     *spesso no abbiamo l'informazione per sapere come gestire l'eccezione,
+     *che tipo di risorse vengono gestite
+     */
   }
 
   //...allora catturo ogni cosa brutto può essere successa
@@ -101,8 +104,8 @@ In c++ avevamo un costrutto che faceva più o meno questa cosa (rilascio risorse
 
 ## RAII - RRID ##
 
-* **RAII**: resource acquisition is initialization
-* **RRID**: resource release is Destruction, è quellaa funzione che quando l'oggetto va fuori scope non importa come, la funzione distruttore viene eseguita. Se l'uscita è eccezionale la lascia propagare come prima quindi è anche resource safe
+* **RAII**: Resource Acquisition Is Initialization
+* **RRID**: Resource Release Is Destruction, è quella funzione che quando l'oggetto va fuori scope non importa come, la funzione distruttore viene eseguita. Se l'uscita è eccezionale la lascia propagare come prima quindi è anche resource safe
 
 Il distruttore ha una terza proprietà, viene chiamato in maniera implicita fintanto che c'è l'oggetto di una classe da distruggere. Quindi se la gestione delle risorse la mettiamo dentro costruttore e distruttore.
 
