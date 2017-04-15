@@ -187,26 +187,27 @@ void foo() {
   try{
     A* a2 = new A(2);
     try {
-		job1(a1, a2);
-		A* a3 = new A(3);
-		try {
-			job2(a1, a3);
-			delete a3;
-		} catch (...) {
-			delete a3;
-			throw;
-		}
-		delete a2;
-		delete a1;
+      job1(a1, a2);
+      A* a3 = new A(3);
+      try {
+	job2(a1, a3);
+	delete a3;
+      } catch (...) {
+	delete a3;
+	throw;
+      }
+      delete a2;
+      delete a1;
     } catch(...) {
-	delete a2;
-	throw;
-  }
+      delete a2;
+      throw;
+    }
   }  catch (...) {
-	delete a1;
-	throw;
+    delete a1;
+    throw;
   }	
 }
+
 ```
 Spiegare perchè la soluzione si può dire exception safety?
 * Ho messo blocco try catch dopo acquisizione risorsa e si chiude dopo eliminazione risorsa, a prescindere di quello che succede le risorse vengono deallocate
