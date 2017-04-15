@@ -6,7 +6,7 @@
  * una buona interfaccia per una classe, questa infatti deve essere
  * costruita in tal modo che l'utente sia portato in modo naturale
  * ad usarla correttamente, e quindi che sia difficile scrivere qualcosa
- * di sbagliato inavvertitamente, così l'utente è protetto da sorprese non volute
+ * di sbagliato inavvertitamente, così l'utente è protetto da sorprese indesiderate
  */
 
 namespace N{
