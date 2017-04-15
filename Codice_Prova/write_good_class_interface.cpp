@@ -80,10 +80,10 @@ namespace N{
   /* Questo operatore non va definito come funzione membro 
    * (nessun operatore binario va definito come funzione membro)
    * poichè l'operatore non funzionerà in modo così naturale come l'utente si aspetterebbe.
-   * Si avrà asimmetria nell'uso nel caso si sommino due tipi diversi, ad esempio:
+   * Si avrà **asimmetria** nell'uso nel caso si sommino due tipi diversi, ad esempio:
    * (double + complex) ma non possibile (complex + double).
    * Questo operatore va implementato mediante l'uso dell'operatore +=, infatti è sempre
-   * preferibile scrivere a op= b piuttosto che a = a op b. È più pulito ed efficiente, poichè
+   * preferibile scrivere (a op= b) piuttosto che (a = a op b). È più pulito ed efficiente, poichè
    * va ad operare direttamente sull'oggetto di sinistra e ritorna solo un riferimento.
    * Notare come l'operando di sinistra (da modificare), sia passato per valore, mentre l'operando
    * di destra per riferimento costante poichè non è necessario modificarlo ma solo legerlo.
@@ -99,9 +99,9 @@ namespace N{
    * implementato come funzione membro. Lo stream viene passato per riferimento, poichè bisogna
    * modificarlo e anche eventualmente poterlo concatenare. L'oggetto da stampare invece viene passato
    * solo per riferimento costante, poichè biogna solo stamparlo.
-   * Questo operatore viene implementato per mezzo della funzione membro print() 
-   * dell'oggeto da stampare. Normalmente le funzioni che non sono membri della classe dovrebbero
-   * essere implementate mediante funzioni membro costanti della classe.
+   * Questo operatore viene implementato per mezzo della funzione membro print() dell'oggeto da stampare. 
+   * Normalmente le funzioni che non sono membri della classe dovrebbero essere implementate mediante
+   * funzioni membro costanti della classe.
    */
   std::ostream& operator<<(std::ostream& out, const Int& x){
     return x.print(out);
