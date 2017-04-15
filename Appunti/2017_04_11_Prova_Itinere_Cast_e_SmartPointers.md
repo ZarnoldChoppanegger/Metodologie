@@ -20,7 +20,27 @@ N::g(5, 2.3);
 
 #### exe2 #####
 * deve essere un codice che da errore e questo sparisce quando inserisco guardie
-(guarda codice exe2.cc)
+```c++
+
+//S.hh
+#ifndef S_HH_GUARD
+#define S_HH_GUARD
+struct S{};
+#endif
+
+//T.hh
+#ifndef T_HH_GUARD
+#define T_HH_GUARD
+#include "S.hh"
+struct T {S s;};
+#endif
+
+//T.cc
+#include "S.hh" //ci sono due definizioni di S viola ODR
+#include "T.hh"
+T t;
+S s;
+```
 
 #### exe3 #####
 * const_cast, fare un cast significa "tramettere" da un tipo di dato a un altro, in linguaggi di programmazione con cast si intende conversione esplicita(forzata)
