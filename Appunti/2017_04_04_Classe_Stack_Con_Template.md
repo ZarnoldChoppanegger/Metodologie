@@ -1,5 +1,5 @@
-se ci passano uno stack vuoto ma di capacità 3ml devo obbligatoriamente allocare tutto quello spazio non usato? NO
-Deciadiamo di creare la copia allocando solo spazio necessario. Se contiene 12 elem la capacità sarà di 12 elem. Vogliamo sia una copia del vector passato (make_copy).
+Se ci passano uno stack vuoto ma di capacità 3 milioni devo obbligatoriamente allocare tutto quello spazio non usato? NO
+Deciadiamo di creare la copia allocando solo spazio necessario. Se contiene 12 elementi la capacità sarà di 12 elementi. Vogliamo sia una copia del vector passato (make_copy).
  
  ```c++
  static value_type* make_copy(const value_type* src, size_type src_size, size_type dst_capacity);
