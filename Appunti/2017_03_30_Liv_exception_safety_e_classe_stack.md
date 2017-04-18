@@ -29,6 +29,7 @@ Come facio a essere sicuro che la mia funzione non lasci uscire eccezione?
 
 
 Contenitori a dimensione variabile, se esauriamo capacità dobbiamo chiedere risorse che sono sotto il nostro controllo.
+Più informazioni [qui]:http://www.stroustrup.com/except.pdf
 
 ## Costruzione classe Stack ##
 Progettare pila che contenga oggetti di qualunque tipo, dinamica. Si usa c++98.
