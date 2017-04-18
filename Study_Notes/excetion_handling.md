@@ -40,12 +40,12 @@ int main()
 ### Exception safe code ###
 
 Gli strumenti di base per scrivere codice exception safe sono:
-1. **blocco try** e
-2. supporto per la tecnica "resource acquisition is initialization".
+* **blocco try** e
+* supporto per la tecnica "resource acquisition is initialization".
 L'idea dietro al RAII è che la responsabilità di una risorsa sia data allo scope dell'oggetto. Tipicamente l'oggetto acquisirà risorse nel suo costruttore e le rilascerà nel suo distruttore, di modo che queste risorse vengano deallocate automaticamente sia quando l'oggetto va fuori scope che quando viene lanciata un'eccezione.
 I principi generali sono:
-  1. non eliminare un'informazione prima di aver memorizzatto la sua sostituta
-  2. mantenere **sempre** l'oggetto in uno stato valido quando si lancai o rilancia un'eccezione
-  3. evitare resource leak.
+    1. non eliminare un'informazione prima di aver memorizzatto la sua sostituta
+    2. mantenere **sempre** l'oggetto in uno stato valido quando si lancai o rilancia un'eccezione
+    3. evitare resource leak.
 In questo modo si può sempre tornare indietro da una situazione di errore.
 Quando si scrive una libreria bisogna sempre puntare ad implementare il livello più alto di exception-safe e garantire sempre il livello base.
