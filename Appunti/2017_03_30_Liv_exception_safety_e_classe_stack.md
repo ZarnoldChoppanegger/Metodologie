@@ -1,38 +1,39 @@
-## Exception safety ##
+# Exception safety #
 
-**Requisiti**:
+## Requisiti: ##
 
-**Liello base**
+### Liello base ###
 
-1. il codice non "ruba" risorse
-2. il codice è neutrale rispetto alle eccezioni, ovvero se qualcuno che ho invocato lancio un'eccezione, l'unica cosa che voglio fare è catturarla temporaneamente per pulire e avvisare fuori in modo che tutti siano avvisati e possano pulire 
+> 1. il codice non "ruba" risorse
 
-Queste  danno il livello base, le garanzie base
+> 2. il codice è neutrale rispetto alle eccezioni, ovvero se qualcuno che ho invocato lancia un'eccezione, l'unica cosa che voglio fare è catturarla temporaneamente per pulire e rilanciare fuori in modo che tutti siano avvisati e possano pulire 
 
-Il livello superiore potrebbe essere: io lavoro su dei servizi che invoco e alcuni di questi lanciano eccezioni perchè vanno male. Io ho provao a fare una op sulla struttura dati, e quindi al momento dell'errore la mia struttura dati in che stato è?
-Se venite interrotti a metà del lavoro in che stato ritorna la struttura dati, rispetta l'invariante?
-Ci sono due casi:
+Queste  danno il livello base, le garanzie base.
 
-*  **transazioni**: avere semantica di tipo transazionale, se op no va a buon fine ritorna eccezone e lo stato della struttura rimane uguale a quello di prima dell'invocazione. A differrenza del requisito base permette di essere in uno stato predicibile, continuare l'esecuzione senza avere undefine behaviour. es. uso vector quello che mi ritorna sempre è **sempre** un vector **ben formato**, lo stato del mio oggetto è fatto bene soddisfa l'invariante, posso almeno distruggerlo per riprendere le risorse.
+Il livello superiore potrebbe essere: io lavoro su dei servizi che invoco e alcuni di questi lanciano eccezioni perchè vanno male. Io ho provato a fare una op sulla struttura dati, e quindi al momento dell'errore la mia struttura dati in che stato è?
+Se venite interrotti a metà del lavoro in che stato ritorna la struttura dati, rispetta l'invariante? Con una **semantica di tipo transazionale**, se l'operazione non va a buon fine ritorna eccezone e lo stato della struttura rimane uguale a quello di prima dell'invocazione. A differrenza del requisito base permette di essere in uno stato predicibile e quindi è possibile continuare l'esecuzione senza avere undefine behaviour. es. uso un vector quello che mi ritorna è **sempre** un vector **ben formato**, lo stato del mio oggetto è fatto bene e soddisfa l'invariante, posso almeno distruggerlo per riprendere le risorse.
 
-3. gli oggetto sui quali si stava lavorando soddisfano le loro invarianti (e quindi sono distruggibili senza causare UB)
+> 3. gli oggetto sui quali si stava lavorando soddisfano le loro invarianti (e quindi sono distruggibili senza causare UB)
 
-**Livello forte**
+### Livello forte ###
 **Semantica atomica:** o tutto o niente
 
-**Livello no-throw** le mie operazioni andrano sempre a buon fine, non lanceranno mai eccezioni. Le funzioni che godono di queste livello sono funzioni ausiliari di supporto, e devono avere questo livello (es. op per rilasciare risorsa, non è che non possono lanciare eccezione ma se lo fanno se la gestiscono in maniera neutrale e devono **USCIRE** in modo normale **NON** eccezionale). **I distruttori non devono mai lasciare uscire un'eccezione, altrimenti demoni usciranno dal naso**
+### Livello no-throw ### 
+Le mie operazioni andrano sempre a buon fine, **non lanceranno mai eccezioni**. Le funzioni che godono di queste livello sono funzioni ausiliari di supporto, e devono avere questo livello (es. op per rilasciare risorsa, non è che non possono lanciare eccezione ma se lo fanno se la gestiscono in maniera neutrale e devono **USCIRE** in modo normale **NON** eccezionale). **I distruttori non devono mai lasciare uscire un'eccezione, altrimenti demoni usciranno dal naso**
 Come facio a essere sicuro che la mia funzione non lasci uscire eccezione?
 
 * segno eccezione in log (brutto)
 
-* rifletto sulle operazioni che faccio, ci sono operazioni che sono garantite che non propagano eccezioni. (es. costruttori distruttori, devono rispettare contratto, eventuali funzioni che sappiamo non lanciano eccezioni, assegnamento a tipi built-in e tutte le operazioni su questi, funzioni swap su built-in e tutte quelle funzioni che per documentazioni lo promettono che non fanno uscire eccezioni)
+* rifletto sulle operazioni che faccio: ci sono operazioni che sono garantite che non propagano eccezioni? (es. costruttori distruttori, devono rispettare contratto, eventuali funzioni che sappiamo non lanciano eccezioni, assegnamento a tipi built-in e tutte le operazioni su questi, funzioni swap su built-in e tutte quelle funzioni che per documentazione lo promettono che non fanno uscire eccezioni)
 
 
 Contenitori a dimensione variabile, se esauriamo capacità dobbiamo chiedere risorse che sono sotto il nostro controllo.
 
+## Costruzione classe Stack ##
 Progettare pila che contenga oggetti di qualunque tipo, dinamica. Si usa c++98.
-programmare usando direttamente funzioni e classi templati a volte è più difficile, perchè compilatore da messaggi meno significativi di quelli non templatici.
-Si svilupperanno tre versioni, una non templatica con un tipo fissato utilizzando quante meno operazioni di modo da usare questa classe in quella templatica, tecnica comune di fare "clone" di una classe. La terza versione assomiglierà  più ai contenitori stl.
+Programmare usando direttamente funzioni e classi templati a volte è più difficile, perchè compilatore dà messaggi meno significativi di quelli non templatici.
+Si svilupperanno tre versioni, una non templatica con un tipo fissato utilizzando quante meno operazioni di modo da usare questa classe in quella templatica (seconda versione); questa è una tecnica comune di fare "clone" di una classe. 
+La terza versione assomiglierà  più ai contenitori stl.
 
 ``` c++
 
