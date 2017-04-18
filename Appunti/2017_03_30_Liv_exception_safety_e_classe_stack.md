@@ -16,10 +16,11 @@ Se venite interrotti a metà del lavoro in che stato ritorna la struttura dati, 
 > 3. gli oggetto sui quali si stava lavorando soddisfano le loro invarianti (e quindi sono distruggibili senza causare UB)
 
 ### Livello forte ###
-**Semantica atomica:** o tutto o niente
+> **Semantica atomica** o tutto o niente. Le operazioni su oggetti oltre a garantire il livello base, possono solo avere successo o nessun effetto. Questo è fondamentale per operazioni base come la push_back(), insert(), etc... 
 
 ### Livello no-throw ### 
-Le mie operazioni andrano sempre a buon fine, **non lanceranno mai eccezioni**. Le funzioni che godono di queste livello sono funzioni ausiliari di supporto, e devono avere questo livello (es. op per rilasciare risorsa, non è che non possono lanciare eccezione ma se lo fanno se la gestiscono in maniera neutrale e devono **USCIRE** in modo normale **NON** eccezionale). **I distruttori non devono mai lasciare uscire un'eccezione, altrimenti demoni usciranno dal naso**
+> Le mie operazioni andrano sempre a buon fine, **non lanceranno mai eccezioni**. Le funzioni che godono di queste livello sono funzioni ausiliari di supporto, e devono avere questo livello (es. op per rilasciare risorsa, non è che non possono lanciare eccezione ma se lo fanno se la gestiscono in maniera neutrale e devono **USCIRE** in modo normale **NON** eccezionale). **I distruttori non devono mai lasciare uscire un'eccezione, altrimenti demoni usciranno dal naso**
+
 Come facio a essere sicuro che la mia funzione non lasci uscire eccezione?
 
 * segno eccezione in log (brutto)
