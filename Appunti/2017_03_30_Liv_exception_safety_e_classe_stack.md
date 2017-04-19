@@ -33,8 +33,8 @@ Più informazioni [qui](http://www.stroustrup.com/except.pdf)
 
 # Costruzione classe Stack #
 Progettare pila che contenga oggetti di qualunque tipo, dinamica. Si usa c++98.
-Programmare usando direttamente funzioni e classi templati a volte è più difficile, perchè compilatore dà messaggi meno significativi di quelli non templatici.
-Si svilupperanno tre versioni, una non templatica con un tipo fissato utilizzando quante meno operazioni di modo da usare questa classe in quella templatica (seconda versione); questa è una tecnica comune di fare "clone" di una classe. 
+Programmare usando direttamente funzioni e classi templatiche a volte è più difficile, perchè il compilatore dà messaggi meno significativi di quelli non templatici.
+Si svilupperanno tre versioni, una non templatica con un tipo fissato utilizzando quante meno operazioni in modo da usare questa classe in quella templatica (seconda versione); questa è una tecnica comune di fare "clone" di una classe. 
 La terza versione assomiglierà  più ai contenitori stl.
 
 ``` c++
