@@ -54,14 +54,16 @@ int Louis_Cypher(const int& ri){
 	//tramite r posso fare modifiche e imbroglio l'utente
 	
 	/* se l'oggetto sul quale voglio fare const_cast è nato oggetto modificabile OK
-		sorprese per l'utente, se però l'oggetto nasce come costante allora il compilatore
-		sarebbe autorizzato a fare cose strane, il compilatore può allocare in zone di memoria di sola lettura,
-		perciò se togliamo const andiamo in undefine behaviour (demoni usciranno dal naso).
-		Può avere senso const_cast quando, per esempio nella razionale andava fatto la normalizzazione del razionale,
-		la classe è eagher(?), è possibile però pensare a implementazioni LAZY, es la classe razionale potrebbe non fare semplificazione subito,
-		lo semplificherà solo quando sarà necessario, e quando diventa necessario? Non lo sappiamo. Es stampa razionale, da documentazione protrebbe
-		dire che dovrebbe stampare numero normalizzato, la routine è const, io vorrei modificare l'oggetto però, e nella routine const non posso farlo,
-		si ha differenza tra rappresentazione fisica e logica, fisica cambio oggetto ma all'utente dal punto di vista logico rimane lo stesso oggetto.
+	   sorprese per l'utente, se però l'oggetto nasce come costante allora il compilatore
+	   sarebbe autorizzato a fare cose strane, il compilatore può allocare in zone di memoria di sola lettura,
+	   perciò se togliamo const andiamo in undefine behaviour (demoni usciranno dal naso).
+	   Può avere senso const_cast quando, per esempio nella razionale andava fatto la normalizzazione del razionale,
+	   la classe è eagher(?), è possibile però pensare a implementazioni LAZY, es la classe razionale potrebbe non fare
+	   semplificazione subito, lo semplificherà solo quando sarà necessario, e quando diventa necessario? Non lo
+	   sappiamo. Es stampa razionale, da documentazione protrebbe
+	   dire che dovrebbe stampare numero normalizzato, la routine è const, io vorrei modificare l'oggetto però, e nella
+	   routine const non posso farlo, si ha differenza tra rappresentazione fisica e logica, fisica cambio oggetto ma
+	   all'utente dal punto di vista logico rimane lo stesso oggetto.
 	*/
 }
 
