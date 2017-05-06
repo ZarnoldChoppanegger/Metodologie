@@ -4,142 +4,100 @@
 
 #define NDEBUG
 
-Razionale::Razionale(int num, int den) :
-  num_{num}, den_{den} {
-
-    assert(check_inv());
-
-    semplifica();
-
-    assert(check_inv());
-} 
+Razionale::Razionale(int num, int den)
+  :  num_{num}, den_{den}
+  {
+    assert(den_ == 0);
+    normalize();
+    assert(test_invariant());
+   }
 
 Razionale Razionale::operator+() const {
-  return *this;
+  return (*this);
 }
 
 Razionale Razionale::operator-() const {
-  auto tmp = *this;
-  tmp.num_ *= -1;
-
-  assert(tmp.check_inv());
-  
+  int den = this->den_ * -1;
+  int num = this->num_;
+  Razionale tmp{den, num};
   return tmp;
 }
 
-Razionale& Razionale::operator++(){
+//prefissi
+Razionale& Razionale::operator++() {
   num_ += den_;
-
-  this->semplifica();
-  
-  assert(check_inv());
+  normalize();
+  assert(test_invariant());
   return *this;
 }
 
-Razionale& Razionale::operator--(){
+Razionale& Razionale::operator--() {
   num_ -= den_;
+  normalize();
+  assert(test_invariant());
   return *this;
 }
 
-Razionale Razionale::operator++(int){
-  auto tmp = *this;
+//postfissi
+Razionale Razionale::operator++(int x) {
+  Razionale tmp{*this};
+  normalize();
+  assert(test_invariant());
   ++(*this);
   return tmp;
 }
 
-Razionale Razionale::operator--(int){
-  auto tmp = *this;
+Razionale Razionale::operator--(int x) {
+  Razionale tmp = *this;
   --(*this);
+  normalize();
+  assert(test_invariant());
   return tmp;
 }
 
-Razionale& Razionale::operator+=(const Razionale& y){
-  assert(y.check_inv());
-
-  num_ = (num_ * y.den_) + (den_ * y.num_);
+//operatori con assegnamento
+Razionale& Razionale::operator+=(const Razionale& y) {
+  assert(y.test_invariant());
+  num_ = (den_ * y.num_) + (num_ * y.den_);
   den_ *= y.den_;
-  this->semplifica();
-  
-  assert(this->check_inv());
+  normalize();
+  assert(test_invariant());
+  return *this;
 }
 
-Razionale& Razionale::operator-=(const Razionale& y){
-  assert(y.check_inv());
-
-  num_ = (num_ * y.den_) - (den_ * y.num_);
+Razionale& Razionale::operator-=(const Razionale& y) {
+  assert(y.test_invariant());
+  num_ = (den_ * y.num_) * (num_ * y.den_);
   den_ *= y.den_;
-  this->semplifica();
-
-  assert(this->check_inv());
+  normalize();
+  assert(test_invariant());
+  return *this;
 }
 
-Razionale& Razionale::operator*=(const Razionale& y){
-  assert(y.check_inv());
-
+Razionale& Razionale::operator*=(const Razionale& y) {
+  assert(y.test_invariant());
   num_ *= y.num_;
   den_ *= y.den_;
-  this->semplifica();
-
-  assert(this->check_inv());
+  normalize();
+  assert(test_invariant());
+  return *this;
 }
 
-Razionale& Razionale::operator/=(const Razionale& y){
-  assert(y.check_inv());
-
+Razionale& Razionale::operator/=(const Razionale& y) {
+  assert(y.test_invariant());
   num_ /= y.num_;
   den_ /= y.den_;
-  this->semplifica();
-
-  assert(this->check_inv());
+  normalize();
+  assert(test_invariant());
+  return *this;
 }
 
-bool Razionale::operator==(const Razionale& y) const{
-  assert(y.check_inv());
-
-  if(num_ == y.num_ && den_ == y.den_) return true;
-
-  return false;
+std::ostream& print(std::ostream& os) const {
+  os << num_ << '/' << den_;
+  return os;
 }
 
-bool Razionale::operator!=(const Razionale& y) const{
-  return !((*this) == y);
-}
-
-std::ostream& Razionale::print(std::ostream& out) const{
-
-  out << num_ << '/' << den_;
-
-  return out;
-}
-
-void Razionale::semplifica(){
-
-  int val = mcd(num_, den_);
-
-  num_ /= val;
-  den_ /= val;
-}
-
-
-bool Razionale::check_inv() const{
-
-  if(den_ == 0)
-    return false;
-
-  if(num_ == 0)
-    return (den_ == 1);
-
-  if(den_ < 0)
-    return false;
-
-  if(!comprimi(abs(num_), den_))
-    return false;
-
-  return true;
-}
-
-
-int Razionale::mcd(int x, int y){
+int Razionale::gcd(int x, int y) {
   x = abs(x);
   y = abs(y);
   //indefinito ma lo si fa per comodità
@@ -167,9 +125,22 @@ int Razionale::mcd(int x, int y){
   }
 }
 
+int Razionale::abs(int x) {
+  return (x < 0 ? -x : x);
+}
 
-bool Razionale::comprimi(int x, int y){
+bool Razionale::test_invariant() const {
 
+  if (den_ <= 0) return false;
+
+  else if(num_ == 0) return (den_ == 1);
+
+  else if(!is_normalize(abs(num_), den_)) return false;
+
+  return true;
+}
+
+bool Razionale::is_normalize(int x, int y) {
   int val = mcd(x, y);
   
   if(val == 0 || val == y || val == 1)
@@ -177,29 +148,58 @@ bool Razionale::comprimi(int x, int y){
 
   else return false;
 }
+// funzioni entro la classe finiscono qui
 
-
-int Razionale::abs(int x){
-  
-  if(x < 0) return -x;
-
-  else return x;
+// operatori di confronto
+bool Razionale::operator==(const Razionale& x, const Razionale& y) {
+  if (x.num_ == y.num_ && x.den_ == y.den_) return true;
+  return false;
 }
 
-Razionale operator+(Razionale x, const Razionale& y){
+bool Razionale::operator!=(const Razionale& x, const Razionale& y) {
+  return !(x == y);
+}
+
+bool Razionale::operator<(const Razionale& x, const Razionale& y) {
+  float a = x.num_ / x.den_;
+  float b = y.num_ / y.den_;
+
+  return a < b;
+}
+
+
+bool Razionale::operator>(const Razionale& x, const Razionale& y) {
+  return !(x < y);
+}
+
+bool Razionale::operator<=(const Razionale& x, const Razionale& y) {
+  return (x == y || x < y);
+}
+
+bool Razionale::operator>=(const Razionale& x, const Razionale& y) {
+  return (x == y || x > y);
+}
+
+Razionale Razionale::operator+(Razional x, const Razionale& y) {
   x += y;
-
   return x;
 }
 
-Razionale operator-(Razionale x, const Razionale& y){
+Razionale Razionale::operator-(Razionale x, const Razionale& y) {
   x -= y;
-  
   return x;
 }
 
-std::ostream& operator<<(std::ostream& out, const Razionale& x){
-  x.print(out);
+Razionale Razionale::operator*(Razionale x, const Razionale& y) {
+  x *= y;
+  return x;
+}
 
-  return out;
+Razionale Razionale::operator/(Razionale x, const Razionale& y) {
+  x /= y;
+  return x;
+}
+
+std::ostream& operator<<(std::ostream& os, const Razionale& r_out) {
+  return r_out.print(os);
 }

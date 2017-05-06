@@ -1,44 +1,31 @@
-#include "Razionale.hpp"
 #include <iostream>
-#include <string>
-#include <sstream>
+#include "Razionale.hpp"
 
-/*bool test1(){
+bool test1(){
+
   Razionale r1;
   Razionale r2;
 
-  return(r1 != r2);
+  return (r1 != r2);
 }
 
 bool test2(){
-  Razionale r;
+  Razionale r1 = 25;
+  Razionale r2 {18};
 
-  std::stringstream ss;
-
-  s << r;
-
-  const std::string& s = ss.str();
-
-  return (s != 0);
+  return (r1 <= r2);
 }
-*/
 
 bool test3(){
-  Razionale r1{-13, 20};
-  auto r2 = r1;
-  r1 += 1;
-  ++r2;
-
-  std::cout << r1 << ' ' << r2 << '\n';
-  
-  return (r1 != r2); 
+  Razionale r1 {4, 2};
+  Razionale r2 {++r1};
+  return (r1 == r2);
 }
 
-int main()
-{
-  //std::cout << "Test 1: " << test1();
-  //std::cout << "Test 2: " << test2();
-  std::cout << "Test 3: " << test3();
-  
+int main(){
+  test1();
+  test2();
+  test3();
+
   return 0;
 }
