@@ -120,13 +120,15 @@ void prova() {
 }
 ```
 
-Lo stack dovrebbe essere ridimensionabile, non posso permetteermi di avere uno stack grande quanto il numero di elementi. Allora ha due concetti: quanti elementi sono memorizzati (size) e capacità, quanti elementi posso memorizzare, questo serve per chiedere risorse al sistema, quando voglio aggiungere capacità, copio tutti gli elementi in nuova locazione con capacità più grande (costo lineare al numero di elementi che si possono memorizzare).
-Uso tipo senza segno per variabile che determina dimensioni. Il tipo dei valori contenuti nello stack (typedef T value_type;) e gli si da un alis in modo da poterlo chiamare più tardi. Quindi (value_type* vec_;) è un puntatore a un tipo value_type, quando sforo faccio riallocazione. 
+Lo stack dovrebbe essere ridimensionabile, non posso permettermi di avere uno stack grande quanto il numero di elementi. Allora ha due concetti: quanti elementi sono memorizzati (size) e capacità, quanti elementi posso memorizzare, questo serve per chiedere risorse al sistema, quando voglio aggiungere capacità, copio tutti gli elementi in nuova locazione con capacità più grande (costo lineare al numero di elementi che si possono memorizzare).
+Uso tipo senza segno per variabile che determina dimensioni. Il tipo dei valori contenuti nello stack (typedef T value_type;) e gli si da un alias in modo da poterlo chiamare più tardi. Quindi (value_type* vec_;) è un puntatore a un tipo value_type, quando sforo faccio riallocazione. 
 
 ``` c++
-/*possiamo fare un costruttore di default, del quale possiamo specificare la dimensione e con explicit evitiamo che si possa fare conversione implicita*/
+/* possiamo fare un costruttore di default, del quale possiamo specificare la dimensione
+ * e con explicit evitiamo che si possa fare conversione implicita
+ */
 
-explicit Stack(size_tyoe capacity = 16);
+explicit Stack(size_type capacity = 16);
 
 void swap(Stack& y); //scambia il contenuto con quello di y
 
@@ -139,8 +141,14 @@ bool is_empty();
 value_type& top();
 const value_type& top() const; //è essenziale restituire riferimento costante
 
-/* sono due top diverse, una è const l'altra no. Per decidere se due funzioni sono diverse bisogna guardare nome e tipo e parametri funzione. Le due funzioni hanno argomenti diversi e quindi vanno in overloading.
-es. T& t = s2.top() quale funzione chiamata?  la prima match perfetto, nella seconda conversione di qualificazione e quindi vince la prima e abbiamo un riferimento modificabile, questo però non ha nulla a che vedere con la risoluzione dell'overloading, se scrivevo const T& t = s2.top() non cambiava nulla. */
+/* sono due top diverse, una è const l'altra no. 
+ * Per decidere se due funzioni sono diverse bisogna guardare nome, tipo e parametri funzione.
+ * Le due funzioni hanno argomenti diversi e quindi vanno in overloading.
+ * es. T& t = s2.top() quale funzione chiamata?  la prima match perfetto, nella seconda conversione 
+ * di qualificazione e quindi vince la prima e abbiamo un riferimento modificabile, questo però non 
+ * ha nulla a che vedere con la risoluzione dell'overloading, se scrivevo const T& t = s2.top() non cambiava nulla,
+ * veniva invocata sempre la top() non costante poichè l'oggetto chiamante s2, è non costante.
+ */
 
 bool OK() const; //è l'invariante di classe
 
@@ -149,27 +157,36 @@ Implementazione:
 
 ``` c++
 bool Stack::OK() const{
-	if(capacity == 0) {
-	#indef NDEBUG
-		std::cerr << "Errore"
-	#endif //NDEBUG
-		return false;
-	}
-	
-	if (vec_ == 0){
-	#ifndef NDEBUG
-		//errore
-	#endif //NDEBUG
-		return false;
-	}
-	
-	//Tutto ok
-	return true;
-	
-	/* in realtà però non c'è modo di controllare che sia stata allocata la diensione chiesta, ci sono proprietà non verificabili perchè non codificabili come per esempio la posizione di un puntatore*/
-	
-}
+  if(capacity == 0) {
+#indef NDEBUG
+    std::cerr << "Lo Stack e` dichiarato avere una capacita` nulla!\n";
+#endif //NDEBUG
+    return false;
+  }
 
+  if(size_ > capacity_) {
+#ifndef NDEBUG
+    std::cerr << "Lo Stack e' dichiarato avere una dimensione "
+	      << "superiore alla capacita'!\n";
+#endif //NDEBUG
+    return false;
+  }
+  
+  if (vec_ == 0){
+#ifndef NDEBUG
+    std::cerr << "Non vi sono risorse allocate per lo Stack!\n";
+#endif //NDEBUG
+    return false;
+  }
+	
+  //Tutto ok
+  return true;
+	
+  /* in realtà però non c'è modo di controllare che sia stata allocata la diensione chiesta, 
+   * ci sono proprietà non verificabili perchè non codificabili come per esempio la posizione
+   * di un puntatore
+   */	
+}
 ```
 Le inline
 
@@ -177,47 +194,81 @@ Le inline
 /* contratto wide, fino a size 16 imposto io la dimensione*/
 inline
 Stack::Stack(const size_type capacity) 
-	: vec_ (new value_type[capacity == 0 ? 16 : capacity]), //non si può :vec_(new value_type[capacity_]) capacity_ non ancora inizializzato
-	capacity_(capacity == 0 ? 16 : capacity),
-	size_(0) {
-		assert(OK());
-		}
+  : vec_ (new value_type[capacity == 0 ? 16 : capacity]),
+    //non si può :vec_(new value_type[capacity_]) capacity_ non ancora inizializzato
+    capacity_(capacity == 0 ? 16 : capacity),
+    size_(0) {
+  // NOTA: la capacita` deve essere maggiore di 0.
+  assert(OK());
+}
 
-/* funziona? c'è da chiedersi se siamo exception safe. Cosa può andare male? 
-	La new, questa fa: 1. alloca memoria grezza, quanta? quanto è il sizeof(value_type)? 
-	Il sistema restituisce spazio necessario. 2. si chiama il costruttore di default n volte per inizializzare gli oggetti dal primo verso l'ultimo. 
-	OSS: pensavamo stack fosse vuoto, invece contiene oggetti.
-	Prima cosa che può andare storto è che il sistema non dia memoria, eccezione bad_alloc.
-	Oppure l'allocazione ha successo e durante l'inizializzazione si hanno altro allocazioni, bad_alloc, oppure eccezioni per  altri possibili errori. Possiamo conoscerli tutti gli errori? NO
-	Di fronte a queste eccezioni siamo exception safe?
-	La new da garanzia che se da bad_alloc rilascia risorse. Quindi noi cosa dobbiamo fare?
-	Niente, lasciamo che l'eccezione si propaghi verso l'uscita.
-	L'allocazione va a buon fine, e verso la fine c'è errore, la new ancora è exception safe e disfa tutto nell'ordine inverso,  e il costruttore ha la garanzia di no-throw quindi nessuno lancia un'altra eccezione.
-	Quindi anche se si lancia eccezione noi non siamo con nessuna risorsa e quindi non dobbiamo preoccuparcene.
-	Il mio costruttore quindi è execption safe, requisito forte e fornisce queste garanzie sotto le condizioni che la new si comporta bene e che il distruttore dell'oggetto value_type non lanci eccezione*/
+/* funziona? c'e` da chiedersi se siamo exception safe. Cosa può andare male? 
+ * La new, questa fa: 
+ * 1. alloca memoria grezza, quanta? quanto è il sizeof(value_type)? 
+ * Il sistema restituisce lo spazio necessario. 
+ * 2. si chiama il costruttore di default n volte per inizializzare gli oggetti 
+ * dal primo verso l'ultimo. 
+ * OSSERVAZIONE: pensavamo stack fosse vuoto, invece contiene oggetti.
+ * Prima cosa che può andare storto è che il sistema non dia memoria, eccezione bad_alloc.
+ * Oppure l'allocazione ha successo e durante l'inizializzazione si hanno altre allocazioni, 
+ * bad_alloc, oppure eccezioni per altri possibili errori. Possiamo conoscerli tutti gli errori? NO
+ * Di fronte a queste eccezioni siamo exception safe?
+ * La new dà garanzia che se dà bad_alloc rilascia risorse. Quindi noi cosa dobbiamo fare?
+ * Niente, lasciamo che l'eccezione si propaghi verso l'uscita.
+ * L'allocazione va a buon fine, e verso la fine c'è errore, la new ancora è exception safe e disfa 
+ * tutto nell'ordine inverso, e il costruttore ha la garanzia di no-throw quindi nessuno lancia 
+ * un'altra eccezione.
+ * Quindi anche se si lancia eccezione noi non siamo con nessuna risorsa e quindi 
+ * non dobbiamo preoccuparcene.
+ * Il mio costruttore quindi è execption safe, requisito forte e fornisce queste garanzie sotto 
+ * le condizioni che la new si comporta bene e che il distruttore dell'oggetto value_type 
+ * non lancia eccezione
+*/
 
 inline
 Stack::~Stack(){
-	delete[] vec_;
+  delete[] vec_;
 	
-	/* la delete comincia dall'ultimo degli elementi e li ditrugge, sapendo che non verranno generate eccezioni perchè il costruttore di value_type non lascia uscire eccezioni.*/
+  /* la delete comincia dall'ultimo degli elementi e li ditrugge, 
+   * sapendo che non verranno generate eccezioni perchè il distruttore 
+   * di value_type non lascia uscire eccezioni.
+   */
 }
 
-/* quando abbiamo regola dei tre dobbiamo ridefinire sia operatore di copia che di assegnamento e assicurarsi siano exception safe. Si definisce per bene una di queste funzioni e l'altra la si implementa con un template*/
+/* quando abbiamo regola dei tre (rule of three) dobbiamo ridefinire sia operatore di copia 
+ * che di assegnamento e assicurarsi siano exception safe. Si definisce per bene una di queste
+ * funzioni e l'altra la si implementa con un template
+*/
+
+inline
+Stack::Stack(const Stack& y)
+  : vec_(make_copy(y.vec_, y.size_, (y.size_ == 0) ? 1 : y.size_)),
+    capacity_((y.size_ == 0) ? 1 : y.size_),
+    size_(y.size_) {
+  // NOTA: la capacita` deve essere maggiore di 0. Si e` deciso di
+  // impostarla uguale alla dimensione dello stack copiato.
+  assert(OK());
+}
 
 inline Stack&
 Stack::operator=(const Stack& y) {
-	/* prima facciamo la copia e poi distruggiamo risorse perchè se qualcosa va male devo tornare in dietro */
-	Stack temp(y);
-	swap(temp);
-	return *this;
+  /* prima facciamo la copia e poi distruggiamo risorse perchè 
+   * se qualcosa va male devo tornare in dietro 
+   */
+  Stack temp(y);
+  swap(temp);
+  return *this;
 	
-	/* così implementiamo un operatore di assegnamento senza ridefinirlo e in modo exception safe*/
+  /* così implementiamo un operatore di assegnamento senza 
+   * ridefinirlo e in modo exception safe
+   */
 }
 
 /* funzione di servizio, no-throw*/
-
-Stack::swap(Stack& y){ std::swap(vec_m, y.vec_); std::swap(size_,
-	y.size_); std::swap(capacity_, y.capacity); } 
-	
+inline void
+Stack::swap(Stack& y){
+  std::swap(vec_, y.vec_);
+  std::swap(size_, y.size_);
+  std::swap(capacity_, y.capacity_);
+} 	
 ```
