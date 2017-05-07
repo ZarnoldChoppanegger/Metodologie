@@ -146,8 +146,9 @@ const value_type& top() const; //è essenziale restituire riferimento costante
  * Le due funzioni hanno argomenti diversi e quindi vanno in overloading.
  * es. T& t = s2.top() quale funzione chiamata?  la prima match perfetto, nella seconda conversione 
  * di qualificazione e quindi vince la prima e abbiamo un riferimento modificabile, questo però non 
- * ha nulla a che vedere con la risoluzione dell'overloading, se scrivevo const T& t = s2.top() non cambiava nulla,
- * veniva invocata sempre la top() non costante poichè l'oggetto chiamante s2, è non costante.
+ * ha nulla a che vedere con la risoluzione dell'overloading, se scrivevo const T& t = s2.top() non
+ * cambiava nulla, veniva invocata sempre la top() non costante poichè l'oggetto chiamante s2, 
+ * è non costante.
  */
 
 bool OK() const; //è l'invariante di classe
