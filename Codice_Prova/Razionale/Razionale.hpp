@@ -7,11 +7,11 @@ class Razionale{
 
 public:
   //costruttore di default
-  /*constexpr*/ Razionale(int num = 0, int den = 1);
+  Razionale(long num = 0, long den = 1);
 
   //rule of five, costruttore e assegnamento per copia e spostamento
   //vanno bene anche quelli di default
-  /*constexpr*/ explicit Razionale(const Razionale&) = default;
+  Razionale(const Razionale&) = default;
   Razionale(Razionale&&) = default;
   Razionale& operator=(const Razionale&) = default;
   Razionale& operator=(Razionale&&) = default;
@@ -34,20 +34,23 @@ public:
   Razionale& operator*=(const Razionale& y);
   Razionale& operator/=(const Razionale& y);
 
+  long numerator() const;
+  long denominator() const;
+
   // funzione di stampa
   std::ostream& print(std::ostream& os) const;
 
   ~Razionale() { };
   
 private:
-  int num_;
-  int den_;
+  long num_;
+  long den_;
 
   // calcola mcd tra due numeri
-  static int gcd(int x, int y);
+  static long gcd(long x, long y);
 
   // calcola il valore assoluto di x
-  static int abs(int x);
+  static long abs(long x);
 
   // testa l'invariante della classe:
   // den != 0
@@ -58,7 +61,7 @@ private:
   void normalize();
 
   // vedi se x/y sono in forma normalizzata
-  static bool is_normalize(int x, int y);
+  static bool is_normalize(long x, long y);
 };
 
 //operatori di confronto
