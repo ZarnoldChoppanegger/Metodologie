@@ -39,7 +39,10 @@ La terza versione assomiglierà  più ai contenitori stl.
 
 ``` c++
 
-/* Perchè inizia con la maiuscola? Può essere utile usare convenizioni (tipi maiuscola, variabili minuscola) Quindi quando si lavora su un progetto bisogna adeguarsi alle convenzioni */
+/* Perchè inizia con la maiuscola? Può essere utile usare convenizioni 
+ *(tipi maiuscola, variabili minuscola) Quindi quando si lavora su un progetto
+ * bisogna adeguarsi alle convenzioni 
+ */
 	
 #include "Stack.hh"
 
@@ -47,33 +50,73 @@ La terza versione assomiglierà  più ai contenitori stl.
 
 void prova() {
 	
-	Stack s1;
-	/* si fanno queste perchè non sappiamo come è implementato lo stack, può essere in maniera efficiente e quindi si sanno subito le dimensioni, oppure non efficiente e quindi per trovare le dimensioni è costoso */
-	assert(s1.size() == 0);
-	assert(s1.is_empty());
+  Stack s1;
+  /* si fanno queste perchè non sappiamo come è implementato lo stack, può essere in maniera 
+   * efficiene e quindi si sanno subito le dimensioni, oppure non efficiente e quindi trovare
+   * le dimensioni è costoso 
+   */
+  assert(s1.size() == 0);
+  assert(s1.is_empty());
+
+  std::cerr << "\n\n ### fine fase 1 ## \n\n";
 	
-	/* semantica per valore, si intende sempre come copia a meno che non specifichiamo il riferimento, quindi fa copia profonda di default */
-	stack s2(s1);
+  /* semantica per valore, si intende sempre come copia a meno che non specifichiamo il riferimento,
+   * quindi fa copia profonda di default 
+   */
+  Stack s2(s1);
 	
-	/* FRAME CONDITION*/
-	assert(s1.size() == 0 && s2.size() == 0);
+  /* FRAME CONDITION*/
+  assert(s1.size() == 0 && s2.size() == 0);
+
+  std::cerr << "\n\n ### fine fase 2 ## \n\n";
 	
-	s2.push("aaa");
-	assert(s1.size() == 0 && s2.size == 1); //vogliamo assicurarci che s2 sia cresciuto
-	
-	//questo non rompe invarianti
-	T& t = s2.top();
-	assert(t == "aaa");
-	
-	/* la diff da quella in cima è che quella è una costruzione diretta, questa  potrebbe
-		essere interpretata come costruzione indiretta. Con la costruzione diretta si può fare
-		conversione implicita, con quella indiretta il compilatore darebbe errore*/
-		
-	Stack s3 = s2;
-	
-	s3 = s2 = s1;
-	
-	//[...]
+  s2.push("aaa");
+  assert(s1.size() == 0 && s2.size == 1); //vogliamo assicurarci che s2 sia cresciuto
+
+  std::cerr << "\n\n ### fine fase 3 ## \n\n";
+  
+  //questo non rompe invarianti
+  T& t = s2.top();
+  assert(t == "aaa");
+  t = "bbb";
+  assert(s2.top() == "bbb");
+
+  std::cerr << "\n\n ### fine fase 4 ## \n\n";
+  
+  /* la differenze da quella in cima è che quella è una costruzione diretta, questa  potrebbe
+   * essere interpretata come costruzione indiretta. Con la costruzione diretta si può fare
+   * conversione implicita, con quella indiretta il compilatore darebbe errore 
+   */		
+  Stack s3 = s2;
+  assert(s2.size() == 1 && s3.size() == 1 && s3.top() == s2.top());
+
+  std::cerr << "\n\n ### fine fase 5 ## \n\n";
+
+  s3 = s2 = s1;
+  assert(s1.is_empty() && s2.is_empty() && s3.is_empty());
+
+  std::cerr << "\n\n ### fine fase 6 ## \n\n";
+
+  s1.push("abra");
+  s1.push("cadabra");
+  s1.top();
+  assert(s1.size() == 1 && s1.top() == "abra");
+
+  std::cerr << "\n\n ### fine fase 7 ## \n\n";
+
+  {
+    Stack s4;
+    s4.swap(s1);
+  }
+
+  std::cerr << "\n\n ### fine fase 8 ## \n\n";
+
+  assert(s1.is_empty());
+  const size_t big_size = 4000;
+  T t1("t1");
+  for (size_t i = 0; i < big_size; ++i)
+    s1.push(t1);
+  assert(s1.size() == big_size);
 }
 ```
 
