@@ -189,7 +189,7 @@ Funzioni oggetto che rappresentano operazioni chiave in un algoritmo sono spesso
 Quando dichiarare una funzione oggetto separatamente da dove viene usata sembra inconveniente, è possibile generare la funzione oggetto in modo implicito mediante le `lambda expression`.
 
 ``` c++
-void f(const Vector<int>& vec)
+void f(const Vector<int>& vec, int x)
 {
   count << "Numero di valori minori di " << x
         << ": " << count(vec, [&x](int a) { return a < x; })
