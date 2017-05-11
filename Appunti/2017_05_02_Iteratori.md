@@ -70,13 +70,13 @@ void stampa_tutti(iter first, Iter last) {
 ### Algoritmi ###
 Si inventano un po' di algoritmi
 
-//Predicati su sequenze
+Predicati su sequenze
 
-//Non predicati
+Non predicati
 
-//find: trova in una sequenza la prima occorrenza del valore v.
+find: trova in una sequenza la prima occorrenza del valore v.
 
-//Uso
+Uso
 
 ``` c++
 void gelati(const std::vector<std::string>& vg) {
@@ -118,9 +118,9 @@ find(Iter first, Iter last,  const Value& value) {
 }
     
 ```
-Per convenzione gli iteratori si passano sempre per valore e non per riferimento perchè si sa che sono piccoli. Quindi quello che mi arriva è una copia di quello passato e lo posso modificare tranquillamente. Non ha senso passare per valore, il valore (Value), si passa epr riferimento a costante.
+Per convenzione gli iteratori si passano sempre per valore e non per riferimento perchè si sa che sono piccoli. Quindi quello che mi arriva è una copia di quello passato e lo posso modificare tranquillamente. Non ha senso passare per valore, il valore (Value), si passa **sempre** per **riferimento a costante**.
 Se non trovo nessun valore ritorno quello dopo la sequenza (last).
-Quand'è che funziona questo algoritmo funziona? Quando first e last sono fatti bene, presi dallo stesso contenitore, quindi trovarsi in un range valido!
+Quand'è che questo algoritmo funziona? Quando first e last sono fatti bene, presi dallo stesso contenitore, quindi trovarsi in un range valido!
 **range valido** quando vengono presi dallo stesso iteratore e in ordine. 
 **Value** non serve per forza il tipo contenuto nella sequenza, basta che possa essere confrontato con il tipo della sequenza, usando conversione ovviamente. Questo è più generico, qualsiasi cosa posso confrontare va bene.
 L'utente è obbligato a dare degli iteratori ben formati. È difficile scrivere asserzioni con uso generico.
@@ -178,7 +178,7 @@ max_elem(const Container& cont){
   auto first = cont.begin();
   auto last = cont.end();
   
-  ...
+  ... 
   }
 ```
 Non è quello che volevamo perchè funziona con un solo contenitore! Si perde di generalità! Vado a lavorare su tutto il contenitore, con gli iteratori invece posso lavorare su sottoinsiemi del contenitore, è più flessibile. Si perde generalità lavorando su contenitori, sia perchè non posso lavorare su altri sia perchè non posso lavorare su sottosequenze di questi.
