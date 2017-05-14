@@ -113,4 +113,4 @@ Perchè bisogna definire un'invariante?
 * per chiarire il comportamento della classe.
 * per semplificare la definizione delle funzioni membro.
 * per chiarire la gestione delle risorse della classe.
-* per semplificare la documentazione della classe.k
+* per semplificare la documentazione della classe.
