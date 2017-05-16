@@ -152,7 +152,7 @@ crea un oggetto funzione che implementa il `<` per il tipo stringa, evitandoci d
 std::greater<std::string>();
 ```
 
-**Strict Weak Ordering:** l'ordinamento non deve essere per forza totale (cioè < o >). Non vuol dire che se sono = (hanno stessa lunghezza) allora sono effettivamente uguali. Se due elementi sono inconfrontabili, decido che per me sono equivalenti. Se questi elementi li metto in una classe di equivalenza, allora ottengo un ordinamento totale (es. [tutte stringe lunge 1] < [tutte stringe lunghe 2]).
+**Strict Weak Ordering (SWO):** l'ordinamento non deve essere per forza totale (cioè < o >). Non vuol dire che se sono = (hanno stessa lunghezza) allora sono effettivamente uguali. Se due elementi sono inconfrontabili, decido che per me sono equivalenti. Se questi elementi li metto in una classe di equivalenza, allora ottengo un ordinamento totale (es. [tutte stringe lunge 1] < [tutte stringe lunghe 2]).
 
 Quando non abbiamo ordinamenti parziali che non vanno bene?
 es. quando abbiamo elementi che non possono essere confrontabili tra loro, ma almeno due di questi possono essere confrontati tra loro (A !conf C, B !conf C, A conf B).

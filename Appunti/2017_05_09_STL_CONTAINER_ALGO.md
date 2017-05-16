@@ -86,30 +86,30 @@ I contenitori sono implementati nel modo più simile ma appena l'efficienza cala
 
 Classificare gli iteratori a seconda di quello che possono fare, **categorie di iteratori**:
 1. **Random access iterator(s)**, sono quelli dei (std::vector, std::deque, std::string, array). Danno un accesso efficiente a una qualsiasi posizione della struttura. Che operazioni possiamo fare? Tutto quello che ha senso fare sugli iteratori, quindi:
-  * `++i`, `i++`(non efficiente), `--i`, `i--`(non efficiente) [spostarsi di un passo]
-  * `i + n`, `i - n`, `i += n`, `i -= n`,  [spostarsi di n posizioni, calcolando nuovo iteratore temporaneo o incrementando iteratore]
-  * `i - j` [differenza tra due iteratori]
-  * `==`, `!=`, [confrontare] 
-  * `<`, `<=`, `>`, `>=` [ vedere l'ordine, chi viene prima e dopo, sulla lista non è possibile]
-  * `*i`, `i[n]` [dereferenziazione]
+    * `++i`, `i++`(non efficiente), `--i`, `i--`(non efficiente) [spostarsi di un passo]
+    * `i + n`, `i - n`, `i += n`, `i -= n`,  [spostarsi di n posizioni, calcolando nuovo iteratore temporaneo o incrementando iteratore]
+    * `i - j` [differenza tra due iteratori]
+    * `==`, `!=`, [confrontare] 
+    * `<`, `<=`, `>`, `>=` [ vedere l'ordine, chi viene prima e dopo, sulla lista non è possibile]
+    * `*i`, `i[n]` [dereferenziazione]
 
 2. **Bidirectional iterator(s)** , std::list:
-  * `++i`, `i++`, `--i`, `i--`
-  * `==`, `!=`
-  * `*i`
+    * `++i`, `i++`, `--i`, `i--`
+    * `==`, `!=`
+    * `*i`
   
 3. **Forward iterator(s)** iteratori unidirezionali, std::forward_list (usata solitamente solo quando liste corte):
-  * `++i`, `i++`
-  * `==`, `!=`
-  * `*i`
+    * `++i`, `i++`
+    * `==`, `!=`
+    * `*i`
 
 4. **Input iterator(s)** la differenza sta nel quando e come posso invocarli. Che differenza c'è tra un forward iterator che sia const e un input iterator? Sono due categorie diverse perchè hanno proprietà diverse, ma quali? Gli iteratori di input sono molto deboli per quanto riguarda l'invalidazione: tutte le volte che ho un iteratore di input e mi sposto di un passo, l'elemento che c'era dietro non è più disponibile, è andato perso, questo perchè vengono usati solitamente su stream (std::istream). Prendo due iteratori che si riferiscono alla stessa posizione, se uno dei due lo sposto, questo "distrugge" l'elemento e si rimane con un dangling pointer. Con il forward non succede questo.
-  ** `++i`, `i++`
-  * `==`, `!=`
-  * `*i` (solo lettura)
+    * `++i`, `i++`
+    * `==`, `!=`
+    * `*i` (solo lettura)
 
 * **output iterator(s)** è una gerarchia funzionale, gli output iterator stanno da un'altra parte. scrivi un elemento e non puoi più leggerlo, l'unica cosa che puoi fare è spostarti alla prossima posizione per scrivere nuovamente. Questo lo si usa solitamente per depotenziare un contenitore.
-  ** `++i`, `i++`
+  * `++i`, `i++`
   * `*i` (solo scrittura)
   * `==` (? non sa se si possono confrontare...controllare)
 
