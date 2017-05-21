@@ -198,7 +198,33 @@ La versione per il forward non si è messa perchè non ha senso. Questo è un me
 > Le categorie degli iteratori permette di fornire versioni alternative per avere quella più efficiente.
 
 ## appello_20050920 ##
-
+**exe 5**
+Problemi nel codice:
+``` c++
+#include <string>
+#include <vector>
+#include <iostream>
+typedef std::vector<std::string> vect;
+typedef std::vector<std::string>::iterator iter;
+void f(const vect& v) {
+iter i = std::find(v.begin(), v.end(), "cioccolato");
+iter i_end = std::find(v.begin(), v.end(), "menta");
+while (i != i_end) {
+std::cout << *i << std::endl;
+++i;
+}
+}
+void g(vect& v) {
+iter i = v.begin();
+iter i_end = v.end();
+*i = "cacao";
+v.insert(i, "vaniglia");
+while (i != i_end) {
+std::cout << *i << std::endl;
+++i;
+}
+}
+``` 
 **void f(const vect& v)**
 non compila il programma perchè:
 * andiamo a lavorare su vettore v che è costante, begin() e end() sono quelli marcati const che restituiscono un `const_iterator` e quindi chiamiamo la find(...) che prende un input_iterator.Questa restituisce un iteratore dello stesso tipo passato, cioè un const_iterator. Il problema è quando proviamo ad inizializzare un iteratore `iter i_end` a partire da un const_iterator. Posso fare il contrario. La chiamata è legittima ma l'inizializzazione degli iteratori no. Quindi per risolverlo basta metterli `const_iterator`.
