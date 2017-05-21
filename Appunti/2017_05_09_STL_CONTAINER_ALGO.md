@@ -207,27 +207,28 @@ Problemi nel codice:
 typedef std::vector<std::string> vect;
 typedef std::vector<std::string>::iterator iter;
 void f(const vect& v) {
-iter i = std::find(v.begin(), v.end(), "cioccolato");
-iter i_end = std::find(v.begin(), v.end(), "menta");
-while (i != i_end) {
-std::cout << *i << std::endl;
-++i;
-}
+  iter i = std::find(v.begin(), v.end(), "cioccolato");
+  iter i_end = std::find(v.begin(), v.end(), "menta");
+  while (i != i_end) {
+    std::cout << *i << std::endl;
+    ++i;
+  }
 }
 void g(vect& v) {
-iter i = v.begin();
-iter i_end = v.end();
-*i = "cacao";
-v.insert(i, "vaniglia");
-while (i != i_end) {
-std::cout << *i << std::endl;
-++i;
+  iter i = v.begin();
+  iter i_end = v.end();
+  *i = "cacao";
+  v.insert(i, "vaniglia");
+  while (i != i_end) {
+    std::cout << *i << std::endl;
+    ++i;
+  }
 }
-}
+
 ``` 
 **void f(const vect& v)**
 non compila il programma perchè:
-* andiamo a lavorare su vettore v che è costante, begin() e end() sono quelli marcati const che restituiscono un `const_iterator` e quindi chiamiamo la find(...) che prende un input_iterator.Questa restituisce un iteratore dello stesso tipo passato, cioè un const_iterator. Il problema è quando proviamo ad inizializzare un iteratore `iter i_end` a partire da un const_iterator. Posso fare il contrario. La chiamata è legittima ma l'inizializzazione degli iteratori no. Quindi per risolverlo basta metterli `const_iterator`.
+* andiamo a lavorare su vettore v che è costante, **begin() e end() sono quelli marcati const** che restituiscono un `const_iterator` e quindi chiamiamo la `find(...)` che prende un input_iterator. Questa restituisce un iteratore dello stesso tipo passato, cioè un const_iterator. Il problema è quando proviamo ad inizializzare un iteratore `iter i_end` a partire da un const_iterator. Posso fare il contrario. La chiamata è legittima ma l'inizializzazione degli iteratori no. Quindi per risolverlo basta mettergli `const_iterator`.
 Non funziona bene perchè devo controllare che la find() abbia effettivamente trovato l'elemento e quindi confrontare il risultato con end().
 
 **void g(vect& v)**
