@@ -1,4 +1,4 @@
-## Correzione non completa ##
+## Correzione non completa prova itinere 2017 ##
 
 *exe 2 conversioni e promozioni* 
 *  conversione qualificazione, prende un **riferimento costante** e l'oggetto passato non è costante, non vale se faccio passaggio per valore
@@ -58,7 +58,7 @@ void foo(...){
 
 ### Iteratori  ###
 
-funzione che stampa tutti gli elementi di gualsiasi contenitore che ti dà l'iteratore
+funzione che stampa tutti gli elementi di qualsiasi contenitore che ti dà l'iteratore
 ``` c++
 template <typename Iter>
 void stampa_tutti(iter first, Iter last) {
@@ -90,7 +90,7 @@ Se non lo trovo? Devo ritornare una posizione che indica che non l'ho trovato
 
 ``` c++
 void gelati(std::vector<std::string>& vg) {
-  std::vector<std::string>iterator res = find(vg.begin(),  vg.end(), "menta");
+  std::vector<std::string>::iterator res = find(vg.begin(),  vg.end(), "menta");
   
   if(res != vg.end())  //undefine behaviour se vado oltre
 	*res = "cioccolato";
@@ -103,7 +103,7 @@ template <typename Iter, typename Value>
 Iter 
 find(Iter first, Iter last, const Value& value);
 ```
-Questa non sa niente di contenitori, ci sono solo gli iteratori.
+**Questa non sa niente di contenitori**, ci sono solo gli iteratori.
 
 ``` c++
 template <typename Iter, typename Value>
@@ -128,8 +128,8 @@ L'utente è obbligato a dare degli iteratori ben formati. È difficile scrivere 
 Uso:
 
 ``` c++
-int main() {
-  
+int main() 
+{
   std::vector<std::string> vg;
   vg:push_back("arancia");
   vg:push_back("banana");
@@ -144,12 +144,13 @@ int main() {
   if(*res != vg.end())
     *res = "cioccolato";
 	
-	stampa_tutti(vg.begin(), vg.end());
-	stampa_tutti(ag, ag + 2);	
+  stampa_tutti(vg.begin(), vg.end());
+  stampa_tutti(ag, ag + 2);
+}
 ```
 si sono inventati un modo per avere iteratori su qualsiasi contenitore.
 
-Nella STL quando bisogna fare confronto di ordinamento si usa operato<=, quello che non è minore di nessun altro.
+Nella STL quando bisogna fare confronto di ordinamento si usa `operato<()`, quello che non è minore di nessun altro.
 
 ``` c++
 template <typename Iter>
@@ -166,9 +167,9 @@ Iter max_elem(Iter first, Iter last) {
   return current_max;
 }
 ```
-Se la sequenza è vuota vuol dire che first = last, non entro nel ciclo e restituisco current_max. 
+Se la sequenza è vuota vuol dire che first == last, non entro nel ciclo e restituisco current_max. 
 
-E per il minimo? Usiamo >? No, perchè vogliamo chiedere il meno possibile ai tipi istanziati
+E per il minimo? Usiamo `operator>()`? No, perchè vogliamo chiedere il meno possibile ai tipi istanziati
 
 Chi non ha capito fa così:
 ``` c++
@@ -181,11 +182,11 @@ max_elem(const Container& cont){
   ... 
   }
 ```
-Non è quello che volevamo perchè funziona con un solo contenitore! Si perde di generalità! Vado a lavorare su tutto il contenitore, con gli iteratori invece posso lavorare su sottoinsiemi del contenitore, è più flessibile. Si perde generalità lavorando su contenitori, sia perchè non posso lavorare su altri sia perchè non posso lavorare su sottosequenze di questi.
+Non è quello che volevamo perchè funziona con un solo contenitore! Si perde di generalità! Vado a lavorare su tutto il contenitore, con gli iteratori invece posso lavorare su sottoinsiemi del contenitore, è più flessibile. Si perde generalità lavorando su contenitori, sia perchè non posso lavorare su altri contenitori sia perchè non posso lavorare su sottosequenze di quelli passati.
 
 ``` c++
 //un predicato è un qualcosa che soddisfa il concetto di funzione
-//qualsiasi cosa che si comporti come una funzione
+//qualsiasi cosa che si comporti come una funzione.
 //funzioni predicate unarie, funzioni che le chiamo su un valore
 //e lo convertono a un valore che è vero o falso
 template <typename Iter, typename UnaryPredicate>
@@ -227,7 +228,7 @@ auto b = find_if(vg.begin(), vg.end(), Lungo_Sei());
 //                            bool (*)(const std::string&)>
 ```
 
-Molti degli algoritmi generici della STL hanno anche il predicato. Si mette _if quando la politica  con predicato non può essere differenziata da quella senza predicato.
+Molti degli algoritmi generici della STL hanno anche il predicato. Si mette `_if` quando la politica  con predicato non può essere differenziata da quella senza predicato.
 
 Funzione count:
 
@@ -357,5 +358,5 @@ int main() {
 ```
 Si suppone che la sequenza di output abbia una dimensione tale per poter scrivere tutto il contenuto di input, quindi niente controlli.
 Il tipo di ritorno può essere void, ma a volte è utile sapere quando ho sovrascritto gli elementi, non posizionarmi in fondo ma dove mi ero fermato durante la sovrascrittura.
-Tutte le volte che nella STL ho un algoritmo che lavora su seq di uscita, questo si fa ritornare un iteratore che indica il punto nel quale è arrivato a fare le scritture.
+Tutte le volte che nella STL ho un algoritmo che lavora su sequenza di uscita, questo si fa ritornare un iteratore che indica il punto nel quale è arrivato a fare le scritture.
 
