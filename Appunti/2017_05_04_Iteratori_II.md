@@ -28,7 +28,8 @@ mismatch(Iter1 first1, Iter last1, Iter2 first2) {
 }
 ```
 
-Come è fatta la classe che deve fornire una copia? stl_pair.h
+Come è fatta la classe che deve fornire una coppia? stl_pair.h
+
 Nella pair tutti i campi sono pubblici, inclusi anche i dati membro perchè non ci sono invarianti da soddisfare, quindi non faccio incapsulamento!
 
 **template variadici** è un pacchetto lungo quanto vuoi di argomenti templatici, la tupla è una generalizzazione del concetto di coppia, lunga quanto vuoi che inizializzi a tempo di compilazione.
@@ -50,8 +51,8 @@ Convenzioni STL (sono 3):
 * se assumo che le sequenze abbiano la stessa lunghezza e quindi non metto il secondo iteratore di fine
 * se faccio scrittura non si mette mai l'ultimo iteratore(???)
 
-**Tipi membro:** alias di tipi che vengono forniti all'utente per potersi riferire a quella classe! value_type alias per riferirsi al tipo dei valori contenuti ad esempio in un vector.
-Tipi proxy si comportano come valuetype ma in maniera diversa.
+**Tipi membro:** **alias di tipi che vengono forniti all'utente per potersi riferire a quella classe!** `value_type` alias per riferirsi al tipo dei valori contenuti ad esempio in un vector.
+**Tipi proxy** si comportano come valuetype ma in maniera diversa.
 * **const_reference** è il tipo di riferimento a costante, quindi è l'oggetto che viene riferito costante, corrisponde a costante di value_type.
 * **iterator**, iteratore sugli elementi del vector, non mi interessa come è implementato. È un iteratore a value_type che consente di modificare gli elementi, corrisponde a concetto di puntatore sul quale però posso fare operazioni(andare avanti e indietro):
 * **const_iterator**, permette solo lettura.
