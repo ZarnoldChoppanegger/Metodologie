@@ -231,3 +231,38 @@ void algo(Container& c)
 Il type checking dei template avviene nella definizione del template invece che nella dichiarazione. Questo porta a compile-time a una variante di cosa è spesso chiamato *duck typing* ("Se cammina come una papera e starnazza come una papera, allora è una papera". Si opera solo sui valori e il significato delle operazioni dipende solo da questi e non dai loro tipi. Questo differisce dal punto di vista alternativo che dice che gli oggetti hanno un tipo, il quale determina il significato delle operazioni. 
 > Cosa è fatto a compile-time usando templates non coinvolge oggetti ma solo i valori
 Lo sforzo pratico per usare i template è che la loro definizione (non dichiarazione) deve essere in scope. 
+
+
+#### Esempio codice per uso `typename` e `using` ####
+```c++
+//g++  5.4.0
+
+#include <iostream>
+
+template<typename T>
+class A{
+public:
+    typedef T v1_type;
+    
+    using v2_type = T;
+};
+
+template<typename U>
+class B : public A<U>
+{
+public:
+    typedef typename A<U>::v1_type v1_type;
+    using v2_type = typename A<U>::v2_type;
+};
+    
+
+int main()
+{
+    B<int>::v1_type x {10};
+    B<double>::v2_type y {20};
+    
+    std::cout << x << '\n' << y;
+    
+    return 0;
+}
+```
