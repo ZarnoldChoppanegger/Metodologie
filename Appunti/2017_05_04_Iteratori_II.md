@@ -36,7 +36,7 @@ Nella pair tutti i campi sono pubblici, inclusi anche i dati membro perchè non 
 
 Esiste la versione di mismatch con il confronto:
 
-``` `c++
+``` c++
 template<typename Iter1, typename Iter2>
 mismatch(Iter1 first1, Iter1 last2, Iter2 first2, BindPred equal) {
   for( ; first1 != last1; ++first1, ++first2) {
