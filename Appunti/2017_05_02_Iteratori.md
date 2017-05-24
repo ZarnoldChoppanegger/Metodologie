@@ -70,9 +70,7 @@ void stampa_tutti(iter first, Iter last) {
 ### Algoritmi ###
 Si inventano un po' di algoritmi
 
-Predicati su sequenze
-
-Non predicati
+Ci sono agoritmi con predicati su sequenze e quelli senza predicati.
 
 find: trova in una sequenza la prima occorrenza del valore v.
 
@@ -121,7 +119,7 @@ find(Iter first, Iter last,  const Value& value) {
 Per convenzione gli iteratori si passano sempre per valore e non per riferimento perchè si sa che sono piccoli. Quindi quello che mi arriva è una copia di quello passato e lo posso modificare tranquillamente. Non ha senso passare per valore, il valore (Value), si passa **sempre** per **riferimento a costante**.
 Se non trovo nessun valore ritorno quello dopo la sequenza (last).
 Quand'è che questo algoritmo funziona? Quando first e last sono fatti bene, presi dallo stesso contenitore, quindi trovarsi in un range valido!
-**range valido** quando vengono presi dallo stesso iteratore e in ordine. 
+**range valido** quando vengono presi dallo stesso contenitore e in ordine. 
 **Value** non serve per forza il tipo contenuto nella sequenza, basta che possa essere confrontato con il tipo della sequenza, usando conversione ovviamente. Questo è più generico, qualsiasi cosa posso confrontare va bene.
 L'utente è obbligato a dare degli iteratori ben formati. È difficile scrivere asserzioni con uso generico.
 
