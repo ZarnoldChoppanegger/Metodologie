@@ -65,24 +65,25 @@ Di metodi begin nel vector ce ne sono due, uno const per essere chiamato da ogge
 Ci sono anche cbegin e cend che ritornano iteratori costanti, sono stati introdotti dal c++11, perchè?
 
 ``` `c++
-	std::vector<int> vi;
+std::vector<int> vi;
 	
-	// se faccio:
-	std::vector<int>::const_iterator first = vi.begin();
-	std::vector<int>::const_iterator last = vi.end();
-	// non è permesso poiche` i tipi sono diversi
-	// cioè const_iterator != iterator, tipi diversi
+// se faccio:
+std::vector<int>::const_iterator first = vi.begin();
+std::vector<int>::const_iterator last = vi.end();
+// non è permesso poiche` i tipi sono diversi
+// cioè const_iterator != iterator, tipi diversi
 	
-	//si può fare così, ma è lungo da scrivere
-	std::vector<int>::const_iterator first = vi.cbegin();
-	std::vector<int>::const_iterator last = vi.cend();
+//si può fare così, ma è lungo da scrivere
+std::vector<int>::const_iterator first = vi.cbegin();
+std::vector<int>::const_iterator last = vi.cend();
 	
-	//se avessi scritto
-	auto first = vi.begin();
-	// non c'è autodeduzione del tipo e quindi 
-	// non capisce che deve essere costante
+//se avessi scritto
+auto first = vi.begin();
+// non c'è autodeduzione del tipo e quindi 
+// non capisce che deve essere costante
 	
-	stampa_tutti<int>::const_iterator last = vi.cend();
+stampa_tutti<int>::const_iterator last = vi.cend();
+
 ```
 Quando la gente implementava i const_iterator metteva anche un costruttore per fare la  conversione da iteratore non costante a costante. Allora, hanno dato due funzioni supplementari per consentire al programmatore di farsi dare l'iteratore costante. Così evito costo della copia e conversione.
 
