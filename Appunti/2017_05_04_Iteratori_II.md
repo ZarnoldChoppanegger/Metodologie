@@ -64,7 +64,7 @@ Di metodi begin nel vector ce ne sono due, uno const per essere chiamato da ogge
 
 Ci sono anche cbegin e cend che ritornano iteratori costanti, sono stati introdotti dal c++11, perchè?
 
-``` `c++
+```c++
 std::vector<int> vi;
 	
 // se faccio:
@@ -89,7 +89,7 @@ Quando la gente implementava i const_iterator metteva anche un costruttore per f
 
 Guarda costruttore di vector che permette di inizializzare a partire da qualsiasi struttura usando gli iteratori.
 
-``` `c++
+```c++
 int main() {
   
   int a[] = { 2, 3, 4, 7, 12, 14, 18 };
@@ -115,7 +115,7 @@ Nel vector l'operator[] non controlla se la posizine data è giusta, non lancia 
 Membro data(): permette di lavorare sul contenuto di un vector anche con quelle funzioni che usano array grezzi.
 Nella vector non c'è push_front, perchè? Perchè non è efficiente e darebbe al programmatore l'idea che sarebbe efficiente. C'è la insert che è più complicata da usare e ti da l'impressione che sia più complesso inserire elementi in una posizione arbitraria. insert() restituisce un iteratore, perchè? Quale è il suo valore? Ho già l'iteratore, l'ho dato io! Non è sempre uguale, per esempio quando rialloca, la posizione di memoria cambia. Questo ti dice che tutte le volte che vai a fare un inserimento in un vector, a meno che non usi reserve, ci potrebbe essere stata una riallocazione quindi tutti gli iteratori potrebbero essere **stati invalidati**, sono diventati dei dangling iterators ed è una fonte di errori più comuni quando si usano vectors. 
 
-``` `c++
+```c++
 for(auto i = vi.begin(), i_end = vi.end(); i != i_end; ++i) {
   if(*i == 'l')
     vi.insert(i, 'L');
@@ -125,7 +125,7 @@ Questo codice è pieno di undefine behaviour, perchè non so quale è la capacit
 
 Migliore:
 
-``` `c++
+```c++
 for(auto i = vi.begin(), i_end = vi.end(); i != i_end; ++i) {
   if(*i == 'l') {
     vi.insert(i, 'L');
