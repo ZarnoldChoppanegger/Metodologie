@@ -66,8 +66,6 @@ public:
     put(uri);
     put(")");
   }
-
-  virtual void page_break() = 0;
   // ...
 };
 
