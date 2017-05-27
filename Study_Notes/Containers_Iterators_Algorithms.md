@@ -7,23 +7,23 @@ Lo standard non definisce quale deve essere la struttura interna di un contenito
 ### Vector ###
 ``` c++
 template<typename T, 
-                  typename Allocator = std::allocator<T>>
+         typename Allocator = std::allocator<T>>
 class Vector;
 ```
 * Struttura dati sequenziale, simile a un array. Gli elementi sono adiacenti l'uno all'altro, quindi è possibile accederci non solo mediante iteratori ma anche mediante offset su regolari puntatori agli elementi del vector. 
 * Il vector occupa più memoria di un normale vettore statico, questo perchè viene allocato più spazio per futuri inserimenti e quindi evitare riallocazioni frequenti, ma solo quando necessario. È possibile vedere lo spazio allocato mediante la funzione membro `capacity()` e ritornare al sistema la memoria non utilizzata mediante la funzione `shrink_to_fit()`, implementata con `copy & swap`.
 * Allocazione di memoria è in generale un'operazione costosa, quindi è possibile allocare una quantità di memoria predefinita mediante la funzione membro `reserve()`, eliminando quindi riallocazione.
-* [insert()!](http://en.cppreference.com/w/cpp/container/vector/insert) ha diverse interfacce, lo scopo principale è inserire uno o n elementi prima di una data posizione. Durante gli inseriementi gli iteratori possono invalidarsi, quindi bisogna stare attenti. L'**inserimento di un solo elemento** è implementato con **exception safe forte**, quello di più elementi no, quindi dopo tanti inseriemnti, se questi non vanno a buon fine, non conosciamo nulla della struttura del vector.
+* [insert()](http://en.cppreference.com/w/cpp/container/vector/insert) ha diverse interfacce, lo scopo principale è inserire uno o n elementi prima di una data posizione. Durante gli inseriementi gli iteratori possono invalidarsi, quindi bisogna stare attenti. L'**inserimento di un solo elemento** è implementato con **exception safe forte**, quello di più elementi no, quindi dopo tanti inseriemnti, se questi non vanno a buon fine, non conosciamo nulla della struttura del vector.
 
 ``` c++
 iterator insert( iterator pos, const T& value );
 iterator insert( const_iterator pos, size_type count, const T& value );
 ```
-* [remove()!](http://en.cppreference.com/w/cpp/container/vector/erase) rimuove gli elementi in una data posizione o in un range. 
+* [remove()](http://en.cppreference.com/w/cpp/container/vector/erase) rimuove gli elementi in una data posizione o in un range. 
 
 ### Map ###
 La map è un container associativo ordinato, che contiene coppie di chiavi-valori con chiavi uniche.
-Le chiavi vengono ordinate usando la funzione `Compare`, la quale determina che due chiavi sono equivalenti (non uniche) se nessuno dei due risulta essere minore dell'altro. Ovvero il criterio di ordinameto è [Strickt Weak Ordering!](https://en.wikipedia.org/wiki/Weak_ordering).
+Le chiavi vengono ordinate usando la funzione `Compare`, la quale determina che due chiavi sono equivalenti (non uniche) se nessuno dei due risulta essere minore dell'altro. Ovvero il criterio di ordinameto è [Strickt Weak Ordering](https://en.wikipedia.org/wiki/Weak_ordering).
 
 ## Algoritmi ##
 
@@ -43,7 +43,7 @@ Le chiavi vengono ordinate usando la funzione `Compare`, la quale determina che 
 ``` c++
 void f(list<int>& li, ostream& out)
 {
-	copy(li.begin(), li.end(), ostream_iterator<int>(out));
+  copy(li.begin(), li.end(), ostream_iterator<int>(out));
 }
 ```
 
