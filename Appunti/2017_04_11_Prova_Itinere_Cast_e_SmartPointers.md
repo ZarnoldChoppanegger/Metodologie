@@ -143,9 +143,12 @@ void yang(const C& y) const{
 }
 
 ~C() {
+// non ha senso mettere l'asserzione qui
   assert(check_inv());
   // codice che implementa il distruttore.
-  // (ricordati come funzione costruzione e distruzione), prima costruisco sotto-oggetto della classe base e poi inizializzo quello che rimane, distruzione avviene in modo inverso
+  // (ricordati come funzione costruzione e distruzione), 
+  // prima costruisco sotto-oggetto della classe base e poi 
+  // inizializzo quello che rimane, distruzione avviene in modo inverso
 }
 
 static void zen(int i, double d) {

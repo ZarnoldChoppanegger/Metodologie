@@ -1,6 +1,6 @@
 ## esercitazione 20060206 ##
 
-**esercizio 3**
+### esercizio 3 ###
 Gli errori che ci sono sono di progettazione, quelo che voglio è che il codice sia robusto rispetto alle modifiche, se creo una nuova classe deve funzionare. Quindi il codice qui è insensibile rispetto alle modifiche? Se introduco un nuovo generatore di manuali, funziona?
 Non funziona perchè nel codice utente dipendiamo dalla tipizzazione **CLOSE WORLD ASSUMPTION (CWA)**. L'utente pretende di conoscere tutti i generatori di manuali da qui alla fine dei tempi. Si vuole codice che si può estendere ma non modificare.
 Si risolve facendo in modo che il codice non sia più modificabile.
@@ -66,8 +66,6 @@ public:
     put(uri);
     put(")");
   }
-
-  virtual void page_break() = 0;
   // ...
 };
 

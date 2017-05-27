@@ -41,14 +41,14 @@ class C{
 template <typename W>
 calss D {
 
-template <tupename T, typename 
+template <tupename T, typename V>
 void foo(T t, V v);
 }
 };
 ```
 
 ``` c++
-Stack<double sd(si);
+Stack<double> sd(si);
 ```
 
 Darà errore! Non sa che funzione chiamare.Se si guarda il costruttore si vede che, in modo implicito, si fa la copia solo di stack che hanno lo stesso tipo di dato.
@@ -63,7 +63,8 @@ Questa è una funzione membro templatica in una classe templatica. NON è costru
 template <typename T>
 template <typename U>
 Stack<T>::Stack(const Stack<U>& y)
-: //simile lista di inizializzazione di costruttore copia e poi push back come se piovesse { 
+: //simile lista di inizializzazione di costruttore copia e poi push back come se piovesse 
+{ 
 }
 
 /* In c++ 98 non c'erano molte scelte, si rinunciava a lista di inizializzazione, diminuendo manutenzione
@@ -77,7 +78,7 @@ delegare il lavoro di costruzione di un costruttore a un'altro chiamandolo nella
 template <typename T>
 template <typename U>
 Stack<T>::Stack(const Stack<U>& y)
-: Stack/y.size() == 0 ? 1 : y.size()){
+: Stack(y.size() == 0 ? 1 : y.size()){
 //Inseriamo gli elementi
 for(size_type i = 0; i < y.size(); ++i)
 {
@@ -87,7 +88,7 @@ push(y.vec_[i]);
 ```
 Quando posso usare questo blocco?
 Quando uso un tipo U che può essere convertito implicitamente a T.
-**Il programma però non compila**: nell'istanziazione del costruttore, lo Stack<int>:vec_ è privato! perchè siamo nella classe Stack di double e vogliamo toccare i metodi privati di Stack di int, quindi questo non si può fare.
+**Il programma però non compila**: nell'istanziazione del costruttore, lo `Stack<int>::vec_` è privato! perchè siamo nella classe Stack di double e vogliamo toccare i metodi privati di Stack di int, quindi questo non si può fare.
 Come si può fare?
 1. creiamo una funzione ausiliaria che dia accesso in sola lettura agli elementi dello stack, ma allora non sarebbe più tecnicamente uno stack, accesso solo in cima
 2. dare accesso agli stack di double accesso alle parti private di double, dichiarando una funzione friend o classe friend.
