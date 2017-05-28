@@ -115,6 +115,77 @@ Esistono cinque categorie di iteratori:
 Gli iteratori sono concetti non classi, quindi la gerachia che sussiste tra questi non è implementata mediante ereditarietà.
 
 ### Iterator traits ###
+> Think of a trait as a small object whose main purpose is to carry information used by another object or algorithm to determine "policy" or "implementation details".
 
+**iterator_traits:** è una classe fornita dalla STL contenente informazioni riguardanti un iteratore. Questo serve quando si vuole implementare un algoritmo in modo generico solo in termini di iteratori.
+Se `Iterator` è un iteratore, `iterator_traits` deve fornire le seguenti informazioni riguardanti un iteratore:
 
+``` c++
+std::iterator_traits<Iterator>::difference_type
+std::iterator_traits<Iterator>::value_type
+std::iterator_traits<Iterator>::iterator_category
+std::iterator_traits<Iterator>::reference
+std::iterator_traits<Iterator>::pointer
+```
+
+Gli iterator_traits sono quindi come dei "passacarte". Perchè quindi usare gli iterator traits, se gli iterator comunque contengono queste informazioni al loro interno?
+Perchè gli iteratori non sono gli unici costrutti con cui è possibile iterare su sequenze, ma è possiible farlo anche con i puntatori, i quali sono tipi built-in che non permettono di fare introspezione su di essi. Quindi si fa una **specializzazione parziale** degli iterator-traits, per puntatori non costanti `T*` e puntatori costanti `const T*`:
+
+``` c++
+template<typename T>
+struct iterator_traits<T*>
+{
+  public:
+    using difference_type = ptrdiff_t;
+	using value_type = T;
+	using iterator_category = random_access_iterator_tag;
+	using pointer = T*;
+	usign reference = T&;
+}
+
+template<typename T>
+struct iterator_traits<const T*>
+{
+  public:
+    using difference_type = ptrdiff_t;
+	usign value_type = T;
+	using iterator_category = random_access_iterator_tag;
+	using pointer = const T*;
+	usign reference = const T&;
+}
+```
+### Iterator tags ###
+È spesso necessario sapere il tipo di iteratore per avere un'implementazione più efficiente di un algoritmo. Quindi sapendo il tipo di iteratore a compile-time verrà scelata l'implementazione più adatta. Per facilitare questo sono stati introdotti gli **iterator-tags**, tipi che fungono da tag per la scelta dell'algoritmo migliore a compile time. Dato un iteratore `Iter`, `std::iterator_traits<Iter>::iterator_category` dovrebbe definire il tipo di tag che più descrive l'iteratore passato.
+
+``` c++
+namespace std {
+  struct input_iterator_tag { };
+  struct output_iterator_tag { };
+  struct forward_iterator_tag: public input_iterator_tag { };
+  struct bidirectional_iterator_tag: public forward_iterator_tag { };
+  struct random_access_iterator_tag: public bidirectional_iterator_tag { };
+}
+```
+Questo meccanismo per la scelta dell'implementazione migliore, costituito da tag e risoluzione dell'overload, è chiamato `tag-dispatching`.
+
+### Iterator Adaptors ###
+La STL fornisce "adattatori" che danno la possibilità di generare operazioni utili legate agli iteratori a partire da un dato tipo di iteratore:
+
+**reverse_iterator:** permette di iterare in senso inverso come se si iterasse in modo normale (es. ++ scorrerà la sequenza all'indietro invece che in avanti)
+**front_insert_iterator:** inserisce elementi all'inizio della sequenza
+**back_insert_iterator:** inserisce elementi alla fine della sequenza
+**insert_iterator:** inserisce elementi in qualsiasi posizione della sequenza
+**raw_storage_iterator:** permette di scrivere su spazio non inizializzato
+
+Gli adattatori `front_inser_iterator`, `back_insert_iterator` e `insert_iterator`, inseriranno elementi nelle sequenze, chiamando rispettivamente i metodi `push_front()`, `push_back()` e `insert()`. Questi adattatori sono accompagnati da funzioni dette inserter (`front_inserter()`, `back_inserter()`, `inserter()`), che permettono l'uso di questi adattatori con deduzione automatica a tempo di compilazione, questo per rendere il codice più conciso, semplice da scrivere e leggere.
+Usare gli inserter è fondamentale quando si vogliono inserire elementi in un container in tutta sicurezza, poichè questo potrebbe avere dimensioni non adatte per ricevere elementi e quindi necessiterebbe di riallocazione. L'unico modo per riallocare solo nel momento necessario è usare la specifica funzione membro (`push_front()`, `push_back()` e `insert()`).
+
+``` c++
+std::istream_iterator<char> cin_begin(std::cin);
+std::istream_iterator<char> cin_end();
+
+std::vector<int> vi;
+
+std::copy(cin_begin, cin_end, std::back_inserter(vi));
+```
 
