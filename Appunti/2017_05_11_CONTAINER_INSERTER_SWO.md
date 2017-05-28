@@ -46,7 +46,7 @@ int main()
   //std::back_insert_iterator<std::vector>std::string>> bi_iter(vs);
 
   // come lo risolvi? Con funzione std che permette di creare l'oggetto
-  std::copy(first, last, std::back_insert(vs) /*bi_iter*/);
+  std::copy(first, last, std::back_inserter(vs) /*bi_iter*/);
   
   // Ordina vs
   // sort prende solo random_access_iterators
