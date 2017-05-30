@@ -4,8 +4,8 @@ Tutto quello fatto fino ad ora si chiama **poliformismo statico**, statico poich
 
 **stringstream:** utile quando ho un numero grande e lo voglio convertire in stringa
 
-**modificare** prendo qualcosa che funziona e lo cambio per farlo funzionare in un altro modo 
-**estendere** qualcosa che funzionava in un modo in certi contesti, ora deve funzionare nello stesso modo ma anche in altri contesti diversi
+* **modificare:** prendo qualcosa che funziona e lo cambio per farlo funzionare in un altro modo 
+* **estendere:** qualcosa che funzionava in un modo in certi contesti, ora deve funzionare nello stesso modo ma anche in altri contesti diversi
 
 Vogliamo risolvere un problema di estendibilità. Se modifichiamo possiamo cambiare il comportamento del programma, rischiando di rompere qualcosa. Quindi ci si chiede se per caso non abbiamo sbagliato a progettare qualcosa. Specie quando ho un punto centralizzato di modifiche e devo anche riconpilare tutto il codice. Io volgio che se l'utente vuole aggiungere una sola cosa, non ricompilo il codice, voglio solo fare del linking. Quindi, non c'è un modo per aggiungere funioni aggiungendo solo codice? Come codice non open, do exe e librerie con cui fare linking. **Codice facilmente estendibile ma non facilmente modificato**.
 Poliformismo dinamico, vuol dire scrivere codice una volta sola e poi trovo un modo per decidere quale è la particolare funzione che vogliamo chiamare.
