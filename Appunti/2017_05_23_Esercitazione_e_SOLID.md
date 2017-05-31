@@ -93,7 +93,7 @@ Sono tutti principi, cose verso le quali dovresti provare ad avvicinarti. Valgon
 OCP è il principio più violato. Ma cosa in particolare?
 * ci sono violazioni che hanno natura più sintattica: 
 Per vedere una di queste violazioni basta vedere il **DIP**.
-I moduli ad alto livello non dovrebbero dipendere da quelli ad alto livello ma entrambi devono dipendere dalle astrazioni. <up> dipendenza buona, <down> dipendenza cattiva.
+I moduli ad alto livello non dovrebbero dipendere da quelli a basso livello ma entrambi devono dipendere dalle astrazioni. <up> dipendenza buona, <down> dipendenza cattiva.
 Dove si vede che qualcosa dipende da qualcosa? Inclusioni, se cambio inclusione cambio codice. Quindi non dovremmo includere dettagli implementativi ma astrazioni in questo modo il codice è più generale e bisogna fare sempre meno modifiche. 
 >Il codice è robusto quando dipende da concetti astratti
 **Perchè?**
