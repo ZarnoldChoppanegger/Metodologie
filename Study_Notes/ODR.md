@@ -16,7 +16,15 @@ Se hai due unità di traduzione e in entrambe c'è la stessa definizione di una 
 * **funzioni inline** delle quali è necessario a tempo di compilazione avere subito a disposizione la definizione e quindi si è obbligati ad inserirla nell'header file.
 * **funzioni template** quando conosco il tipo T, solo allora potrò definire la funzione. Quindi l'implementazione della funzione dipende dal tipo T. Il codice oggetto oggetto prodotto dal compilatore  dipenderà dal corpo della funzione template. Quando si chiama una funzione template, la definizione della funzione deve essere disponibile. Questo è simile alle funzioni inline, dove il corpo è necessario, in questo caso è necessario per poter instanziare il template. Quindi se definiamo un template in un file sorgente e poi proviamo ad usarlo in un altro, non sarà possibile perchè il compilatore non avrà a disposizione il corpo del template.
 
-Queste fanno eccezione alla ODR perchè se non definite nell' header file non sarebbe possibile usarle. Quindi la ODR permette di avere **molteplici definizioni della stessa funzione inline o template** fintanto che queste definizioni:
+Queste fanno eccezione alla ODR perchè se non definite nell' header file non sarebbe possibile usarle.
+
+> There can be more than one definition of a class type, enumeration type, inline function with
+external linkage, inline variable with external linkage, class template, non-static
+function template, static data member of a class template, member function of a class
+template, or template specialization for which some template parameters are not specified,
+in a program provided that each definition appears in a different translation unit
+
+Quindi la ODR permette di avere **molteplici definizioni della stessa funzione inline o template** fintanto che queste definizioni:
 1. appaiono in **diverse unità di traduzione**
 2. sono **identiche** token a token
 3. il **significato** di questi **token è lo stesso** in ogni unità di traduzione
