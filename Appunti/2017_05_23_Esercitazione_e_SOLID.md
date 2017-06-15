@@ -274,4 +274,46 @@ Nella STL quanto viene usata la parola chiave `virtual`?
 Le eccezioni sono il caso interessante nel quale usare il poliformismo (guardare `/usr/include/c++/5.4.0/exception`).
 Tutte le eccezioni hanno metodo virtuale what(). Io catturo eccezione, quale eccezione non lo so.
 
-Passare quando si ha ereditarietà solo per riferimento e no per valore.Per valore viene fatta una copia del pezzettino solo della classe base (quando il parametro e del tipo della classe base).
+**Passare quando si ha ereditarietà solo per riferimento e no per valore.Per valore viene fatta una copia del pezzettino solo della classe base (quando il parametro e del tipo della classe base). Es:**
+
+``` c++
+#include <iostream>
+
+class Base{
+  public:
+    virtual void foo() {
+        std::cout << "Base::foo()\n";
+    }
+};
+
+class Derived : public Base{
+  public:
+    virtual void foo() {
+        std::cout << "Derived::foo()\n";
+    }
+};
+
+int main()
+{
+    Derived d;
+    Base b;
+    Base b2 = d;
+    Base& b3 = d;
+    
+    d.foo();
+    b.foo();
+    b2.foo();
+    b3.foo();
+    
+    return 0;    
+}
+
+// OUTPUT:
+/*
+Derived::foo()
+Base::foo()
+Base::foo()
+Derived::foo()
+ */
+```
+

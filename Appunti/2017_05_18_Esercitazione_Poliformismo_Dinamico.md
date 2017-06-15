@@ -96,7 +96,7 @@ Quando nel c++ si attiva meccanismo poliformismo dinamico bisogna stare attenti 
 No, perchè il supporto a run-time ha bisogno che gli venga passato un oggetto e quindi le funzioni memebro statiche virtuali non hanno senso di esistere.
 
 * esistono le funzioni membro templatiche virtuali?
-No, perchè diventerebbe troppo complicata. è un problema tecnico, quando io ho una funzione membro quella in verità non è una funzione ma un "generatore di funzioni" e se sono virtuali mi genera funzioni virtuali. Ma allora creerebbe una tabella dei metodi virtuali molto grande e quindi impratiabile.
+No, perchè diventerebbe troppo complicata. É un problema tecnico, quando io ho una funzione membro quella in verità non è una funzione ma un "generatore di funzioni" e se sono virtuali mi genera funzioni virtuali. Ma allora creerebbe una tabella dei metodi virtuali molto grande e quindi impratiabile.
 
 * esistono distruttori virtuali?
 Si. È opportuno siano virtuali? Si, quando definisco un'interfaccia astratta ci vuole un costruttore virtuale definito (vuoto). Quando vado a lavorare con puntatori ad oggetti, con contenitori di tipo uniforme (contenitori con tipi base), quando libero risorse faccio delete su puntatori a classe base, ma con distruttore virtuale posso deallocare anche risorse classe derivata perchè viene invocato anche il costruttore del tipo dinamico. 
@@ -116,6 +116,9 @@ Non creo problemi perchè ci sono due utenti del metodo clone(), quello che lo c
 ``` c++
 void pastore(Pecora* pp) {
   Pecora* pq = pp.clone();
+  // se il tipo di ritorno non fosse
+  // Pecora* allora avrei Downcast 
+  // che non é permesso
 }
 
 void noe(Animale* pa) {
@@ -129,12 +132,12 @@ Se non ritornassi il tipo puntatore alla classe derivata, mi ritroverei nel caso
 ``` c++
 class Base {
 public:
-  void foo() { ... }
+  void foo() { bar(); }
 private:
   virtual void bar() const = 0;
 }
 ```
-Ha senso fare una cosa del genere? Tecnicamente si. Ma è bene farlo, ci sono casi in cui ha senso e in cui non ha senso? I metodi virtuali pubblici danno un meccanismo per parametrizzare l'interfaccia della classe a tempo di esecuzione. Nell'esempio di prima diamo la possibilità di parametrizzare un tipo privato che comunque non è possibile chiamarlo nelle classi derivate, quindi fornisco implementazione alternativa di un metodo che non posso chaimarlo. Ha senso? Si. C'è un **design pattern** chiamato **strategy**. Prevede che noi dobbiamo implementare un algoritmo che va eseguito in un certo modo che l'utente non può farci niente, come foo(). Ma alcune operazioni di foo() implementate da bar() danno la possibilità di essere customizzate e quindi l'utente deve e può specificare come devono essere eseguite queste operazioni.
+Ha senso fare una cosa del genere? Tecnicamente si. Ma è bene farlo? Ci sono casi in cui ha senso e in cui non ha senso? I metodi virtuali pubblici danno un meccanismo per parametrizzare l'interfaccia della classe a tempo di esecuzione. Nell'esempio di prima diamo la possibilità di parametrizzare un tipo privato che comunque non è possibile chiamarlo nelle classi derivate, quindi fornisco implementazione alternativa di un metodo che non posso chaimarlo. Ha senso? Si. C'è un **design pattern** chiamato **strategy** (Cerco su Google e mi sembra si sia riferito di piú al [NVI](https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Non-Virtual_Interface)). Prevede che noi dobbiamo implementare un algoritmo che va eseguito in un certo modo che l'utente non può farci niente, come foo(). Ma alcune operazioni di foo() implementate da bar() danno la possibilità di essere customizzate e quindi l'utente deve e può specificare come devono essere eseguite queste operazioni.
 
 * Si può impedire l'overriding?
 Mi piacerebbe arrivare a un punto nel quale nessun'altro può ulteriormente specializzare la classe, cioè impedire di derivare ulteriormente la classe. Nello standard nuovo dovrebbe essere parola chiave **final** 
