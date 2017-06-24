@@ -1,7 +1,7 @@
 ## Scope ##
 
 * **Scope locale:** lo scope di un nome si estende dal punto della sua dichiarazione fino alla fine del blocco. Un blocco è identificato da { }
-* **Scope di classe:** un nome viene chiamato nome menbro di classe, se viene dichiarato all'interno di una classe e all'infuori di qualsiasi altra classe, funzione, enum di classe, o qualsiasi altro namespace. Lo scope del nome è visibile in tutta la classe, cioè dall'inizio della sua definizione " { " fino alla fine " } "
+* **Scope di classe:** un nome viene chiamato nome membro di classe, se viene dichiarato all'interno di una classe e all'infuori di qualsiasi altra classe, funzione, enum di classe, o qualsiasi altro namespace. Lo scope del nome è visibile in tutta la classe, cioè dall'inizio della sua definizione " { " fino alla fine " } "
 * **Scope di globale/namespace:** un nome è chiamato membro di namespace se è definito in un namespace all'infuori di qualsiasi altra classe, namespace, funzione. Lo spazio globale è tecnicamente visto come namespace
 * **Scope di istruzione:** un nome fa parte di uno scope di istruzione se è definito all'interno di () delle istruzioni while-, for-, if-, switch-. Il nome è visibile fino alla fine del blocco dell'istruzione.
 * **Scope di funzione:**
