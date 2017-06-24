@@ -45,6 +45,6 @@ void f(S∗);
 void f(S∗ p) { /* ... */ }
 ``` 
 
-Se si viola la ODR per queste funzioni, no diagnostic required e in pratica il linker non darà alcun errore o avviso, quindi tutto compilerà sembrerà andare bene ma demoni usciranno dal naso... (è importante rispettare questa regola, è la più inportante della ODR).
+Se si viola la ODR per queste funzioni, no diagnostic required e in pratica il linker non darà alcun errore o avviso, quindi tutto compilerà sembrerà andare bene ma demoni usciranno dal naso... (è importante rispettare questa regola, è la più importante della ODR).
 
 Quindi, definire una funzione inline o template in un header va bene, perchè la definizione che comparirà in ciascuna unità di traduzione sarà identica. Il linker quando vedrà i file oggetto con molteplici definizioni di questo tipo di funzioni, ne prenderà solo una e le altre le scarterà.
