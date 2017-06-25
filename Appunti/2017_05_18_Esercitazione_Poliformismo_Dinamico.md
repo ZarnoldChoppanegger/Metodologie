@@ -96,10 +96,10 @@ Quando nel c++ si attiva meccanismo poliformismo dinamico bisogna stare attenti 
 No, perchè il supporto a run-time ha bisogno che gli venga passato un oggetto e quindi le funzioni memebro statiche virtuali non hanno senso di esistere.
 
 * esistono le funzioni membro templatiche virtuali?
-No, perchè diventerebbe troppo complicata. É un problema tecnico, quando io ho una funzione membro quella in verità non è una funzione ma un "generatore di funzioni" e se sono virtuali mi genera funzioni virtuali. Ma allora creerebbe una tabella dei metodi virtuali molto grande e quindi impratiabile.
+No, perchè diventerebbe troppo complicata. É un problema tecnico, quando io ho una funzione membro quella in verità non è una funzione ma un "generatore di funzioni" e se sono virtuali mi genera funzioni virtuali. Ma allora creerebbe una tabella dei metodi virtuali molto grande e quindi impraticabile.
 
 * esistono distruttori virtuali?
-Si. È opportuno siano virtuali? Si, quando definisco un'interfaccia astratta ci vuole un costruttore virtuale definito (vuoto). Quando vado a lavorare con puntatori ad oggetti, con contenitori di tipo uniforme (contenitori con tipi base), quando libero risorse faccio delete su puntatori a classe base, ma con distruttore virtuale posso deallocare anche risorse classe derivata perchè viene invocato anche il costruttore del tipo dinamico. 
+Si. È opportuno siano virtuali? Si, quando definisco un'interfaccia astratta ci vuole un distruttore virtuale definito (vuoto). Quando vado a lavorare con puntatori ad oggetti, con contenitori di tipo uniforme (contenitori con tipi base), quando libero risorse faccio delete su puntatori a classe base, ma con distruttore virtuale posso deallocare anche risorse classe derivata perchè viene invocato anche il costruttore del tipo dinamico.
 
 * esistono costruttori virtuali?
 No perchè l'oggetto deve ancora essere costruito, i costruttori virtuali non esistono. Ci sono cose simili, ma non sono costruttori virtuali. Si possono definire dei metodi che si comportano come dei costruttori ma non lo sono, ad esempio `virtual Animale* clone() const = 0;`. Perchè ritorna un puntatore? Perchè se ritornasse per copia mi ritornerebbe solo una fettina, solo classe base, il puntatore funziona con tipi dinamici. 
@@ -110,7 +110,7 @@ virtual Pecora* clone() const override {
   return new Pecora(*this);
 }
 ```
-Il tipo di ritorno è diverso però tra classe base e derivata e diremmo che in realtà c'è hiding. C'è eccezione però che dice che il tipo di ritorno deve essere un puntatore a classe derivata.
+Il tipo di ritorno è diverso però tra classe base e derivata e diremmo che in realtà c'è hiding. Qui c'è l' eccezione che dice che il tipo di ritorno deve essere un puntatore a classe derivata.
 Non creo problemi perchè ci sono due utenti del metodo clone(), quello che lo chiama su un puntatore a tipo animale. Ma anche quello che va a lavorare su classe concreta, cioè su quella derivata.
 
 ``` c++
@@ -125,7 +125,7 @@ void noe(Animale* pa) {
   Animale* pb = pa.clone();
 }
 ```
-Se non ritornassi il tipo puntatore alla classe derivata, mi ritroverei nel caso nel quale vado a fare down-cast che non è possibile. E allora hanno messo questa eccezione.
+**Se non ritornassi il tipo puntatore alla classe derivata, mi ritroverei nel caso nel quale vado a fare down-cast** che non è possibile. E allora hanno messo questa eccezione.
 
 * si possono definire membri privati/protetti virtuali?
 
@@ -146,9 +146,10 @@ Mi piacerebbe arrivare a un punto nel quale nessun'altro può ulteriormente spec
 
 * Un costruttore (che non può essere virtuale) può invocare al suo interno funzioni virtuali?
 Posso chiamare funzioni membro, ma quelle virtuali? 
-Regola: non invocare metodi virtuali nei costruttori. Funziona, ma non lo fare.
+Regola: non invocare metodi virtuali nei costruttori. Compila, ma non lo fare.
 Nella parte nascosta del mio oggetto, che cosa c'è scritto?
 Il comportamento delle funzioni virtuali nel costruttore cambia in base a dove vengono chiamati.
+Cioé, la classe base verrá costruita prima di quella derivata, quindi nella v-table l'unico metodo che si conoscerá sará quello della classe base. Quindi l'RTS non sará in grado di fare overriding e non chiamerá il metodo implementato nella calsse deriata, ma quello della classe base. 
 
 * Un distruttore (che può essere virtuale) può invocare al suo interno funzioni virtuali?
 Si. Ma è un bene o un male?
@@ -171,10 +172,10 @@ class Derivata {
   { 
     std::cout << "paperino";
     Base* pb = this;
-	// va in loop infinito
-	pb->pippo();
-	// non va in loop infinito
-	pb->Base::pippo();
+    // va in loop infinito
+    pb->pippo();
+    // non va in loop infinito
+    pb->Base::pippo();
   }
 };
 ```
